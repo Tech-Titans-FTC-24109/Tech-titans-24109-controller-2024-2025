@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Disabled
 @TeleOp(group = "Motors")
 
-public class motors extends LinearOpMode {
+public class Motors extends LinearOpMode {
 
     //PLEASE MODIFY / UPDATE VARIABLES FOR THE COMPETITION!  THESE ARE NOT CONSTANTS!
 

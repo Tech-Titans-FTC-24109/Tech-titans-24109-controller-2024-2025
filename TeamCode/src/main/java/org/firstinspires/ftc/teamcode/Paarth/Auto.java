@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 //@Disabled
 @Autonomous
 
-public class auto extends LinearOpMode {
+public class Auto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -18,17 +18,21 @@ public class auto extends LinearOpMode {
         MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
         ArmController arm = new ArmController(hardwareMap);
         waitForStart();
+        claw.closeClaw();
         sleep(500);
-        arm.setPitch(700);
+        arm.setPitch(650);
         sleep(500);
-        arm.setExtension(6000);
+        arm.setExtension(9200);
         sleep(500);
+        wheels.applyPower(0.2F,0,0);
+        sleep(100);
+        wheels.applyPower(0,0,0);
         claw.openClaw();
         sleep(500);
         arm.setExtension(0);
         sleep(500);
-        arm.setPitch(0);
-        sleep(2000);
+        //arm.setPitch(0);
+        //sleep(2000);
 
         terminateOpModeNow();
     }
