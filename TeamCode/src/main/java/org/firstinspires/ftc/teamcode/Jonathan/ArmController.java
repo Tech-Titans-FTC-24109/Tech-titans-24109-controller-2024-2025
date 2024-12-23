@@ -11,7 +11,7 @@ public class ArmController {
     private static final double encoderToRad = (Math.PI/2)/maxPitchEncoder;
     private static final int MAX_HORIZ_EXT = 6000;
     private static final int MAX_VER_EXT = 9200;
-    private static final int maxPitchLimit = 620;
+    private static final int maxPitchLimit = 700;
     private static final int minExtLimit = 0;
 
     private DcMotor pitch;
@@ -62,8 +62,7 @@ public class ArmController {
         while(pitch.isBusy()) {}
     }
 
-    public void rawPitchPower(float power) {
-        pitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public void rawPitchPower(float power) {pitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pitch.setPower(power);
     }
 
