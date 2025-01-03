@@ -6,14 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "Driver control", group = "Driver control")
 public class RobotController extends LinearOpMode {
     private boolean raisedArm = false;
-    @Override
 
+    private static final int START_PITCH = 375;
+
+    @Override
     public void runOpMode() throws InterruptedException {
         IntakeMechanismController intake = new IntakeMechanismController(hardwareMap);
         MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
         ArmController arm = new ArmController(hardwareMap);
         RPController rP = new RPController(hardwareMap);
-        arm.setPitch(75);
+        arm.setPitch(START_PITCH);
         waitForStart();
         while (opModeIsActive()) {
             twoDrivers(intake, wheels, arm, rP);
@@ -46,7 +48,18 @@ public class RobotController extends LinearOpMode {
 
             arm.changePitch(Math.round(gamepad2.left_stick_y * 160));
 //            telemetry.addData("Gpad2, LY", Math.round(gamepad2.left_stick_y * 200));
-            arm.rawExtensionPower(gamepad2.right_stick_y);
+
+        float fineControlValue;
+        if (gamepad2.right_trigger > 0 && gamepad2.left_trigger > 0) {
+            fineControlValue = 0.25F;
+        } else if (gamepad2.right_trigger > 0) {
+            fineControlValue = 0.5F;
+        } else if (gamepad2.left_trigger > 0) {
+            fineControlValue = 0.75F;
+        } else {
+            fineControlValue = 1;
+        }
+        arm.rawExtensionPower(gamepad2.right_stick_y * fineControlValue);
 //            telemetry.addData("Gpad2, RY", Math.round(gamepad2.right_stick_y * 200));
             telemetry.update();
 

@@ -5,11 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmController {
-    private static final float motorPower = 1;
+    private static final float PITCH_MOTOR_POWER = 1;
+    private static final float EXTENSION_MOTOR_POWER = 0.5F;
 
     private static final int maxPitchEncoder = 535;
     private static final double encoderToRad = (Math.PI/2)/maxPitchEncoder;
-    private static final int MAX_HORIZ_EXT = 6000;
+    private static final int MAX_HORIZONTAL_EXT = 1920;
     private static final int MAX_VER_EXT = 9200;
     private static final int maxPitchLimit = 700;
     private static final int minExtLimit = 0;
@@ -40,25 +41,25 @@ public class ArmController {
 
     public void changePitch(int power) {
         int target = pitch.getCurrentPosition() + power;
-        if (target < getMinPitchLimit()) { //min limit changes as arm extends
-            target = getMinPitchLimit();
+        if (target < 0) { //min limit changes as arm extends
+            target = 0;
         } else if (target > maxPitchLimit) {
             target = maxPitchLimit;
         }
         pitch.setTargetPosition(target);
         pitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        pitch.setPower(motorPower);
+        pitch.setPower(PITCH_MOTOR_POWER);
 //        while(pitch.isBusy()) {}
     }
 
     public void setPitch(int power ) {
         int target = power;
-        if (target < getMinPitchLimit()) {
-            target = getMinPitchLimit();
+        if (target < 0) {
+            target = 0;
         }
         pitch.setTargetPosition(target);
         pitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        pitch.setPower(motorPower);
+        pitch.setPower(PITCH_MOTOR_POWER);
         while(pitch.isBusy()) {}
     }
 
@@ -74,7 +75,7 @@ public class ArmController {
         }
         extension.setTargetPosition(target);
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        extension.setPower(motorPower);
+        extension.setPower(EXTENSION_MOTOR_POWER);
         while(extension.isBusy()) {}
     }
 
@@ -89,7 +90,7 @@ public class ArmController {
 
         extension.setTargetPosition(target);
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        extension.setPower(motorPower);
+        extension.setPower(EXTENSION_MOTOR_POWER);
         while(extension.isBusy()) {}
     }
 
@@ -105,7 +106,7 @@ public class ArmController {
         if (cosinus <= 0) {
             return MAX_VER_EXT;
         }
-        double calculated = MAX_HORIZ_EXT / cosinus;
+        double calculated = MAX_HORIZONTAL_EXT / cosinus;
         if (calculated > MAX_VER_EXT) {
             calculated = MAX_VER_EXT;
         }
@@ -124,11 +125,11 @@ public class ArmController {
         return ((int)Math.round(maxLength * 90.66 * 1.5));
     }
 
-    public int getMinPitchLimit () {
-        int extPosition = extension.getCurrentPosition();
-        double minPitchLimit = 100-(0.025*extPosition);
-        return (int)Math.round(minPitchLimit);
-    }
+//    public int getMinPitchLimit () {
+//        int extPosition = extension.getCurrentPosition();
+//        double minPitchLimit = 100-(0.025*extPosition);
+//        return (int)Math.round(minPitchLimit);
+//    }
     public int getPitchPosition() {
         return pitch.getCurrentPosition();
     }
