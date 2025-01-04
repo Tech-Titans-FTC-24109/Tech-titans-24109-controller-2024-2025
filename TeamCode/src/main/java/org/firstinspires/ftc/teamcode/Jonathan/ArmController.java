@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmController {
-    private static final float PITCH_MOTOR_POWER = 1;
+    private static final float PITCH_MOTOR_POWER = 0.6F;
     private static final float EXTENSION_MOTOR_POWER = 0.5F;
 
     private static final int maxPitchEncoder = 535;
     private static final double encoderToRad = (Math.PI/2)/maxPitchEncoder;
     private static final int MAX_HORIZONTAL_EXT = 1920;
     private static final int MAX_VER_EXT = 9200;
-    private static final int maxPitchLimit = 700;
+    private static final int maxPitchLimit = 750;
     private static final int minExtLimit = 0;
 
     private DcMotor pitch;

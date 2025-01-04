@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.Jonathan;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp
+@TeleOp()
 public class IntakeTest extends LinearOpMode {
     @Override
     public void runOpMode() {
