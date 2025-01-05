@@ -3,36 +3,37 @@ package org.firstinspires.ftc.teamcode.Jonathan;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import java.util.function.BooleanSupplier;
+
 @TeleOp(name = "Driver control", group = "Driver control")
 public class RobotController extends LinearOpMode {
     private boolean raisedArm = false;
 
-    private static final int START_PITCH = 375; //public --> auto?
+    private static final int START_PITCH = 271; //public --> auto?
 
     private boolean inFineControls = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        IntakeMechanismController intake = new IntakeMechanismController(hardwareMap);
+        ClawController claw = new ClawController(hardwareMap);
         MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
         ArmController arm = new ArmController(hardwareMap);
         RPController rP = new RPController(hardwareMap);
-        arm.setPitch(START_PITCH);
+        BooleanSupplier stopCondition = () -> opModeIsActive();
+        arm.setPitch(START_PITCH, stopCondition);
         waitForStart();
         while (opModeIsActive()) {
-            twoDrivers(intake, wheels, arm, rP);
+            twoDrivers(claw, wheels, arm, rP);
         }
     }
 
-    private void twoDrivers(IntakeMechanismController intake, MecanumWheelsController wheels, ArmController arm, RPController rP) {
+    private void twoDrivers(ClawController claw, MecanumWheelsController wheels, ArmController arm, RPController rP) {
         double servoState;
 
         if (gamepad2.left_bumper) {
-            intake.applyPower(1);
+            claw.closeClaw();
         } else if (gamepad2.right_bumper) {
-            intake.applyPower(-1);
-        } else {
-            intake.applyPower(0);
+            claw.openClaw();
         }
 
 
@@ -90,26 +91,41 @@ public class RobotController extends LinearOpMode {
         }
         wheels.applyPower(gamepad1.left_stick_x * wheelsFineControlValue, gamepad1.left_stick_y * wheelsFineControlValue, gamepad1.right_stick_x * wheelsFineControlValue);
 
-        float armFineControlValue;
+        float extensionFineControlValue;
         if (gamepad2.right_trigger > 0 && gamepad2.left_trigger > 0) {
-            armFineControlValue = 0.25F;
+            extensionFineControlValue = 0.25F;
         } else if (gamepad2.right_trigger > 0) {
-            armFineControlValue = 0.5F;
+            extensionFineControlValue = 0.5F;
         } else if (gamepad2.left_trigger > 0) {
-            armFineControlValue = 0.75F;
+            extensionFineControlValue = 0.75F;
         } else {
-            armFineControlValue = 1;
+            extensionFineControlValue = 1;
         }
+        arm.rawExtensionPower(gamepad2.right_stick_y * extensionFineControlValue);
+
+        float pitchFineControlValue;
+        if (gamepad2.right_trigger > 0 && gamepad2.left_trigger > 0) {
+            pitchFineControlValue = 10;
+        } else if (gamepad2.right_trigger > 0) {
+            pitchFineControlValue = 25;
+        } else if (gamepad2.left_trigger > 0) {
+            pitchFineControlValue = 50;
+        } else {
+            pitchFineControlValue = 2;
+        }
+
+        arm.changePitch(Math.round(gamepad2.left_stick_y * pitchFineControlValue));
+
+//            telemetry.addData("Gpad2, RY", Math.round(gamepad2.right_stick_y * 200));
+        telemetry.update();
 //        arm.pitchPower(Math.round(gamepad2.left_stick_y * 50));
 //        arm.rawExtensionPower(gamepad2.right_stick_y * 150);
 
-            arm.changePitch(Math.round(gamepad2.left_stick_y * (160 * armFineControlValue)));
+
 //            telemetry.addData("Gpad2, LY", Math.round(gamepad2.left_stick_y * 200));
 
 
-        arm.rawExtensionPower(gamepad2.right_stick_y * armFineControlValue);
-//            telemetry.addData("Gpad2, RY", Math.round(gamepad2.right_stick_y * 200));
-            telemetry.update();
+
 
 //        if (gamepad2.a) {
 //            raisedArm=true;

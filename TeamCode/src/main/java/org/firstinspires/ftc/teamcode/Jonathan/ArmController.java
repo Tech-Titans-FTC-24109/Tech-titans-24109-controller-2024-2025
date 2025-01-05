@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import java.util.function.BooleanSupplier;
+
 public class ArmController {
     private static final float PITCH_MOTOR_POWER = 0.6F;
     private static final float EXTENSION_MOTOR_POWER = 0.5F;
@@ -41,8 +43,8 @@ public class ArmController {
 
     public void changePitch(int power) {
         int target = pitch.getCurrentPosition() + power;
-        if (target < 0) { //min limit changes as arm extends
-            target = 0;
+        if (target < getMinPitchLimit()) { //min limit changes as arm extends
+            target = getMinPitchLimit();
         } else if (target > maxPitchLimit) {
             target = maxPitchLimit;
         }
@@ -52,15 +54,15 @@ public class ArmController {
 //        while(pitch.isBusy()) {}
     }
 
-    public void setPitch(int power ) {
+    public void setPitch(int power, BooleanSupplier stopCondition) {
         int target = power;
-        if (target < 0) {
-            target = 0;
+        if (target < getMinPitchLimit()) {
+            target = getMinPitchLimit();
         }
         pitch.setTargetPosition(target);
         pitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         pitch.setPower(PITCH_MOTOR_POWER);
-        while(pitch.isBusy()) {}
+        while(pitch.isBusy() && stopCondition.getAsBoolean()) {}
     }
 
     public void rawPitchPower(float power) {pitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -68,7 +70,7 @@ public class ArmController {
     }
 
 
-    public void setExtension(int power) {
+    public void setExtension(int power, BooleanSupplier stopCondition) {
         int target = power;
         if (target < minExtLimit) {
             target = minExtLimit;
@@ -76,7 +78,7 @@ public class ArmController {
         extension.setTargetPosition(target);
         extension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extension.setPower(EXTENSION_MOTOR_POWER);
-        while(extension.isBusy()) {}
+        while(extension.isBusy() && stopCondition.getAsBoolean()) {}
     }
 
     public void changeExtension(int power) {
@@ -125,11 +127,12 @@ public class ArmController {
         return ((int)Math.round(maxLength * 90.66 * 1.5));
     }
 
-//    public int getMinPitchLimit () {
-//        int extPosition = extension.getCurrentPosition();
-//        double minPitchLimit = 100-(0.025*extPosition);
-//        return (int)Math.round(minPitchLimit);
-//    }
+    public int getMinPitchLimit () {
+        int extPosition = extension.getCurrentPosition();
+        double minPitchLimit = 10-(0.075*extPosition);
+        return (int)Math.round(minPitchLimit);
+    }
+
     public int getPitchPosition() {
         return pitch.getCurrentPosition();
     }
