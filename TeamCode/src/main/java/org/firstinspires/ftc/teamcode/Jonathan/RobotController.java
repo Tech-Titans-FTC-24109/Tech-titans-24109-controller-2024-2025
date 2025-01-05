@@ -9,6 +9,8 @@ public class RobotController extends LinearOpMode {
 
     private static final int START_PITCH = 375; //public --> auto?
 
+    private boolean inFineControls = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
         IntakeMechanismController intake = new IntakeMechanismController(hardwareMap);
@@ -33,13 +35,47 @@ public class RobotController extends LinearOpMode {
             intake.applyPower(0);
         }
 
-        if (gamepad2.dpad_up) {
-            rP.changeRP(1);
-        } else if (gamepad2.dpad_down) {
-            rP.changeRP(-1);
-        } else {
-            rP.changeRP(0);
+
+        //How to use fine control:
+        //dpad left to turn on, dpad right to turn off
+        //same controls as RPDebugger
+        if (gamepad2.dpad_left) {
+            inFineControls = true;
+        } else if (gamepad2.dpad_right) {
+            inFineControls = false;
         }
+
+        if (inFineControls) {
+            float leftPower;
+            if (gamepad2.dpad_up) {
+                leftPower = 0.25F;
+            } else if (gamepad2.dpad_down) {
+                leftPower = -0.25F;
+            } else {
+                leftPower = 0;
+            }
+
+            float rightPower;
+            if (gamepad2.y) {
+                rightPower = 0.25F;
+            } else if (gamepad2.a) {
+                rightPower = -0.25F;
+            } else {
+                rightPower = 0;
+            }
+
+            rP.individualPower(leftPower,rightPower);
+        } else {
+            if (gamepad2.dpad_up) {
+                rP.changeRP(1);
+            } else if (gamepad2.dpad_down) {
+                rP.changeRP(-1);
+            } else {
+                rP.changeRP(0);
+            }
+        }
+
+
 
 
         float wheelsFineControlValue;
@@ -96,6 +132,8 @@ public class RobotController extends LinearOpMode {
 
         telemetry.addData("rPLeft", rP.getRPLeftPosition());
         telemetry.addData("rPRight", rP.getRPRightPosition());
+
+        telemetry.addData("inFineControls", inFineControls);
 
         telemetry.update();
 
