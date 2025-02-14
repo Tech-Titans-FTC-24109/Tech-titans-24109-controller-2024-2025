@@ -21,17 +21,17 @@ public class Auto extends LinearOpMode {
         ClawController claw = new ClawController(hardwareMap);
         RPController rP = new RPController(hardwareMap);
         BooleanSupplier stopCondition = () -> opModeIsActive();
-        arm.setPitch(271, stopCondition);
+        arm.setPitch(350, stopCondition);
         waitForStart();
         rP.changeRP(1);
-        sleep(500);
+        sleep(3501);
         rP.changeRP(0);
-        wheels.applyPower(0.5F,0.5F,0); //move to basket
-        sleep(500);
-        wheels.applyPower(0,0,0);
-        arm.setPitch(700, stopCondition); //pitch up
-        arm.setExtension(2600, stopCondition); //extend out
-        claw.openClaw(); //dispense sample
+//        wheels.applyPower(0.5F,0.5F,0); //move to basket
+//        sleep(500);
+//        wheels.applyPower(0,0,0);
+//        arm.setPitch(700, stopCondition); //pitch up
+//        arm.setExtension(2600, stopCondition); //extend out
+//        claw.openClaw(); //dispense sample
         //done phase 1
 
 

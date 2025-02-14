@@ -51,4 +51,11 @@ public class MecanumWheelsController {
         rightFront.setPower(rightFrontPower);
         rightBack.setPower(rightBackPower);
     }
+
+    public void autoDrive(double leftFrontPower, double leftBackPower, double rightFrontPower, double rightBackPower) {
+        leftFront.setPower(leftFrontPower);
+        leftBack.setPower(leftBackPower);
+        rightFront.setPower(rightFrontPower);
+        rightBack.setPower(rightBackPower);
+    }
 }

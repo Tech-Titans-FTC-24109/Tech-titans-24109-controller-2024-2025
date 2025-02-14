@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Jonathan;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,8 +29,14 @@ public class RPController {
     }
 
     public void changeRP(float power) {
-        rPRight.setPower(power);
-        rPLeft.setPower(power);
+        boolean unchangingRPs = false;
+        if ((getRPRightPosition() >= -20000) || (getRPLeftPosition() >= -20000)) {//-10200 is the minimum height
+            rPRight.setPower(power);                                              //otherwise, it falls off
+            rPLeft.setPower(power);
+        } else {
+            telemetry.addLine("R&P's are too low! Cannot lower further.");
+            telemetry.update();
+        }
     }
 
     public void individualPower(float leftMotorPower, float rightMotorPower) {

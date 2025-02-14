@@ -129,7 +129,7 @@ public class ArmController {
 
     public int getMinPitchLimit () {
         int extPosition = extension.getCurrentPosition();
-        double minPitchLimit = 10-(0.075*extPosition);
+        double minPitchLimit = 50-(0.07*extPosition);
         return (int)Math.round(minPitchLimit);
     }
 

@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 
 import java.security.KeyPairGenerator;
 
@@ -21,33 +22,19 @@ public class ImuTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        initHardware();
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.resetYaw();
+
         while (!isStarted()) {
 
-            imu.resetYaw();
-
             IMU.Parameters myIMUparameters;
-
-            myIMUparameters = new IMU.Parameters(
-                    new RevHubOrientationOnRobot(
-                            new Orientation(
-                                    AxesReference.INTRINSIC,
-                                    AxesOrder.ZYX,
-                                    AngleUnit.DEGREES,
-                                    0,
-                                    0,
-                                    -90,
-                                    0  // acquisitionTime, not used
-                            )
-                    )
-            );
 
             // Initialize IMU directly
 
             imu.initialize(
                     new IMU.Parameters(
                             new RevHubOrientationOnRobot(
-                                    RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                                     RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
                             )
                     )
@@ -63,64 +50,31 @@ public class ImuTest extends LinearOpMode {
             telemetry.addData("Yaw (IMU)", Yaw);
             telemetry.addData("Pitch (IMU)", Pitch);
             telemetry.addData("Roll (IMU)", Roll);
+            telemetry.update();
 
 
         }
         waitForStart();
         while (opModeIsActive()) {
+
+
         }
     }
-
-    public void initHardware() {
+    public void turnAngle(int angle) {
+        MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
+        double powerLeft;
+        double powerRight;
+        if (angle > 0){
+            powerLeft  = -0.2;
+            powerRight = 0.2;
+        }
+        else {
+            powerLeft  = 0.2;
+            powerRight = -0.2;
+        }
+        // while imu yaw <(if target is positive) or >(if target is negative) target angle keep driving
+        wheels.autoDrive(powerLeft, powerLeft, powerRight, powerRight);
+        //when done, stop motors
 
     }
-    public int lineCount = 125; //useless
-    //(but secretly useful...shhhhh! {:]=|=<  0:::|;;;;;;;;;;;;>  };|)::I::|<)
 }
-
-//we
-//have
-//83
-//lines
-//of
-//code
-
-
-
-
-
-
-
-
-
-
-//94....
-
-
-
-
-
-
-
-
-
-
-//do you see this....
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//the winning lottery number is 119835

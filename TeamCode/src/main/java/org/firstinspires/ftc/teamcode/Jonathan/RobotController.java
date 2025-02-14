@@ -111,7 +111,7 @@ public class RobotController extends LinearOpMode {
         } else if (gamepad2.left_trigger > 0) {
             pitchFineControlValue = 50;
         } else {
-            pitchFineControlValue = 25;
+            pitchFineControlValue = 55;
         }
 
         arm.changePitch(Math.round(gamepad2.left_stick_y * pitchFineControlValue));
