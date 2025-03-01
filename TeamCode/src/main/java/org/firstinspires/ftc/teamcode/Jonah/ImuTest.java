@@ -1,80 +1,48 @@
 package org.firstinspires.ftc.teamcode.Jonah;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
-
-import java.security.KeyPairGenerator;
 
 @Autonomous(name="myTest")
 //@Disabled
 public class ImuTest extends LinearOpMode {
+
+    public static final double ANGLE_ERROR = 5; // degrees
+
     public IMU imu;
+
+    private ImuUtility imuCalculator;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
-        imu.resetYaw();
+        imuCalculator = new ImuUtility(imu);
+
 
         while (!isStarted()) {
 
-            IMU.Parameters myIMUparameters;
-
-            // Initialize IMU directly
-
-            imu.initialize(
-                    new IMU.Parameters(
-                            new RevHubOrientationOnRobot(
-                                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-                            )
-                    )
-            );
-
-            YawPitchRollAngles orientation;
-            orientation = imu.getRobotYawPitchRollAngles();
-
-            double Yaw = orientation.getYaw(AngleUnit.DEGREES);
-            double Pitch = orientation.getPitch(AngleUnit.DEGREES);
-            double Roll = orientation.getRoll(AngleUnit.DEGREES);
-
-            telemetry.addData("Yaw (IMU)", Yaw);
-            telemetry.addData("Pitch (IMU)", Pitch);
-            telemetry.addData("Roll (IMU)", Roll);
-            telemetry.update();
-
-
         }
         waitForStart();
+
+        double turnAngle = 90;// degrees
+        double startAngle = imuCalculator.getCurrentAngle();
+        double targetAngle = startAngle + turnAngle;
+
         while (opModeIsActive()) {
+            double currentAngle = imuCalculator.getCurrentAngle();
+            double remainingAngle = targetAngle - currentAngle;
+            if (Math.abs(remainingAngle) < ANGLE_ERROR) {
+                wheels.autoDrive(0, 0, 0, 0);
+                terminateOpModeNow();
+            }
 
-
+            double leftPower = imuCalculator.calculatePower(remainingAngle);
+            double rightPower = leftPower * -1;
+            wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
         }
-    }
-    public void turnAngle(int angle) {
-        MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
-        double powerLeft;
-        double powerRight;
-        if (angle > 0){
-            powerLeft  = -0.2;
-            powerRight = 0.2;
-        }
-        else {
-            powerLeft  = 0.2;
-            powerRight = -0.2;
-        }
-        // while imu yaw <(if target is positive) or >(if target is negative) target angle keep driving
-        wheels.autoDrive(powerLeft, powerLeft, powerRight, powerRight);
-        //when done, stop motors
-
     }
 }
