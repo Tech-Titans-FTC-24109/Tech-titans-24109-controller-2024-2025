@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 //@Disabled
 public class ImuTest extends LinearOpMode {
 
-    public static final double ANGLE_ERROR = 5; // degrees
+    public static final double ANGLE_ERROR = 2; // degrees
 
     public IMU imu;
 
@@ -28,21 +28,33 @@ public class ImuTest extends LinearOpMode {
         }
         waitForStart();
 
-        double turnAngle = 90;// degrees
+        int maxSteps = 1;
+        int stepNumber = 1;
+        double turnAngle = 190;// degrees
         double startAngle = imuCalculator.getCurrentAngle();
         double targetAngle = startAngle + turnAngle;
 
-        while (opModeIsActive()) {
-            double currentAngle = imuCalculator.getCurrentAngle();
-            double remainingAngle = targetAngle - currentAngle;
-            if (Math.abs(remainingAngle) < ANGLE_ERROR) {
-                wheels.autoDrive(0, 0, 0, 0);
-                terminateOpModeNow();
-            }
+        while (opModeIsActive() && (stepNumber <= maxSteps)) {
+            if (stepNumber == 1) {
+                double currentAngle = imuCalculator.getCurrentAngle();
+                double remainingAngle = targetAngle - currentAngle;
+                if (Math.abs(remainingAngle) < ANGLE_ERROR) {
+                    wheels.autoDrive(0, 0, 0, 0);
+                    telemetry.addLine("yes i am in the loop");
+                    telemetry.update();
+                    stepNumber++;
+                }
 
-            double leftPower = imuCalculator.calculatePower(remainingAngle);
-            double rightPower = leftPower * -1;
-            wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
+                double rightPower = imuCalculator.calculatePower(remainingAngle);
+                double leftPower = rightPower * -1;
+                wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
+
+                telemetry.addData("current angle", currentAngle);
+                telemetry.addData("remaining angle", remainingAngle);
+                telemetry.addData("target. ", targetAngle);
+                telemetry.addData("start angle. ", startAngle);
+                telemetry.update();
+            }
         }
     }
 }
