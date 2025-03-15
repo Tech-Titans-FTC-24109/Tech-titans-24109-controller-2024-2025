@@ -30,10 +30,10 @@ public class ImuUtility {
      */
     public double calculatePower(double angle){
         if (angle > 0){
-            return  -0.2;
+            return  0.2;
         }
         else {
-            return  0.2;
+            return  -0.2;
         }
     }
 
@@ -41,5 +41,9 @@ public class ImuUtility {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
 
         return orientation.getYaw(AngleUnit.DEGREES);
+    }
+
+    public void reset() {
+        imu.resetYaw();
     }
 }
