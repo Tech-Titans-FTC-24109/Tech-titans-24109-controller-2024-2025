@@ -11,6 +11,13 @@
 
 // Custom definitions may go here
 
+plugins {
+    // https://speakerdeck.com/vincentpaing/state-of-junit-5-in-android
+    // have to use 1.10 instead of 1.12 as the latter requires Gradle 8
+    // https://github.com/mannodermaus/android-junit5
+    id "de.mannodermaus.android-junit5" version "1.10.0.0"
+}
+
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
@@ -23,6 +30,22 @@ android {
     }
 }
 
+ext {
+    // align with android-junit5 plugin
+    junitJupiterVersion = '5.10.1'
+}
+
 dependencies {
     implementation project(':FtcRobotController')
+
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
+    //testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}"
+
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    // only use mockito-core to prevent hamcrest issue - should be last
+    testImplementation 'org.mockito:mockito-core:5.12.0'
 }
+
