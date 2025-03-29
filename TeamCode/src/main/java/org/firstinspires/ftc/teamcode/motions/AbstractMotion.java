@@ -11,6 +11,9 @@ package org.firstinspires.ftc.teamcode.motions;
  */
 public abstract class AbstractMotion {
 
+    private boolean isInit = false;
+    private boolean motionComplete = false;
+
     /**
      * Template method for initializing the concrete motion
      * To be implemented by subclass
@@ -29,7 +32,7 @@ public abstract class AbstractMotion {
      * @return true when the motion is initialize, false otherwise
      */
     public boolean isInitialized() {
-        return false;
+        return isInit;
     }
 
     /**
@@ -38,7 +41,7 @@ public abstract class AbstractMotion {
      * @return true when the motion has completed, false otherwise
      */
     public boolean isCompleted() {
-        return false;
+        return motionComplete;
     }
 
     /**
@@ -52,6 +55,12 @@ public abstract class AbstractMotion {
      * @throws IllegalStateException when the motion is already initialized
      */
     public void init() {
+        if (!isInit) {
+            initMotion();
+            isInit = true;
+        } else {
+            throw new IllegalStateException("Already initialized. you are a bad boy...");
+        }
     }
 
     /**
@@ -71,6 +80,13 @@ public abstract class AbstractMotion {
      * @throws IllegalStateException when the motion is not initialized
      */
     public boolean move() {
-        return false;
+        if (!isInit) {
+            throw new IllegalStateException("cannot move without initialization you bababoy");
+        }
+        if (!motionComplete) {
+            motionComplete = performMove();
+        }
+
+        return motionComplete;
     }
 }
