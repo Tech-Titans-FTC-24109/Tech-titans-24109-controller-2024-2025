@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.motions.TurnMotion;
 
 @Autonomous(name="myTest")
 //@Disabled
@@ -22,13 +23,14 @@ public class ImuTest extends LinearOpMode {
         imu = hardwareMap.get(IMU.class, "imu");
         imuCalculator = new ImuUtility(imu);
 
-
-        while (!isStarted()) {
-
-        }
+        TurnMotion turnLeft = new TurnMotion(imuCalculator, 90.0, wheels, telemetry);
+        TurnMotion turnRight = new TurnMotion(imuCalculator, -90.0, wheels, telemetry);
+//        while (!isStarted()) {
+//
+//        }
         waitForStart();
 
-        int maxSteps = 4;
+        int maxSteps = 3;
         int stepNumber = 1;
 
         //RIGHT HAND RULE - +90 degrees = left, -90 degrees = right
@@ -38,63 +40,24 @@ public class ImuTest extends LinearOpMode {
 
         while (opModeIsActive() && (stepNumber <= maxSteps)) {
             if (stepNumber == 1) {
-                turnAngle = 90;// degrees
-                startAngle = imuCalculator.getCurrentAngle();
-                targetAngle = startAngle + turnAngle;
-                stepNumber++;
-            } else if (stepNumber == 2) {
-                double currentAngle = imuCalculator.getCurrentAngle();
-                double remainingAngle = targetAngle - currentAngle;
 
-                if (Math.abs(remainingAngle) < ANGLE_ERROR) {
-                    wheels.autoDrive(0, 0, 0, 0);
+                if (!turnLeft.isInitialized()) {
+                    turnLeft.init();
+                }
+                if (turnLeft.move()) {
                     stepNumber++;
-                    //reset IMU
-                    imuCalculator.reset();
                 }
-                else {
-                    double leftPower = imuCalculator.calculatePower(remainingAngle);
-                    double rightPower = leftPower * -1;
-                    wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
-                }
-
-                telemetry.addData("current angle!", currentAngle);
-                telemetry.addData("remaining angle", remainingAngle);
-                telemetry.addData("target. ", targetAngle);
-                telemetry.addData("start angle. ", startAngle);
-                telemetry.update();
-            } else if (stepNumber == 3) {
+            } else if (stepNumber == 2) {
                 stepNumber++;
                 sleep(2000);
-            } else if (stepNumber == 4) {
-                imuCalculator.reset();
-                turnAngle = -90;// degrees
-                startAngle = imuCalculator.getCurrentAngle();
-                targetAngle = startAngle + turnAngle;
-                stepNumber++;
-            } else if (stepNumber == 5) {
-                double currentAngle = imuCalculator.getCurrentAngle();
-                double remainingAngle = targetAngle - currentAngle;
-
-                if (Math.abs(remainingAngle) < ANGLE_ERROR) {
-                    wheels.autoDrive(0, 0, 0, 0);
+            } else if (stepNumber == 3) {
+                if (!turnRight.isInitialized()) {
+                    turnRight.init();
+                }
+                if (turnRight.move()) {
                     stepNumber++;
-                    //reset IMU
-                    imuCalculator.reset();
                 }
-                else {
-                    double leftPower = imuCalculator.calculatePower(remainingAngle);
-                    double rightPower = leftPower * -1;
-                    wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
-                }
-
-                telemetry.addData("current angle!", currentAngle);
-                telemetry.addData("remaining angle", remainingAngle);
-                telemetry.addData("target. ", targetAngle);
-                telemetry.addData("start angle. ", startAngle);
-                telemetry.update();
             }
-
         }
     }
 }

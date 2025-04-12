@@ -23,6 +23,8 @@ public abstract class AbstractMotion {
     /**
      * Template method for performing one step/iteration of the concrete motion
      * To be implemented by subclass
+     *
+     * @return true if the move is complete, otherwise return false
      */
     protected abstract boolean performMove();
 
