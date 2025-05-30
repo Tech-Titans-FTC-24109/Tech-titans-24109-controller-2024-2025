@@ -24,8 +24,17 @@ public class MecanumWheelsController {
     }
 
     public void applyPower(float x, float y, float turn) {
-        x = -x;
-        turn = -turn;
+        x *= -1;
+        turn *= -1;
+        if (Math.abs(x) < 0.01) {
+            x = 0;
+        }
+        if (Math.abs(y) < 0.01) {
+            y = 0;
+        }
+        if (Math.abs(turn) < 0.01) {
+            turn = 0;
+        }
 
         float leftFrontPower  = (y + turn + x) * scalePower;
         float leftBackPower   = (y + turn - x) * scalePower;

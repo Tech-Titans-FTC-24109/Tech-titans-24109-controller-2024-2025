@@ -6,33 +6,43 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class ClawController {
     private static final double servoOpen = 0.85;
-    private static final double servoClosed = 0.6;
+    private static final double servoClosed = 0.2;
     
-    private Servo servo;
+    private Servo claw;
+    private Servo wrist;
 
     public ClawController(@NonNull HardwareMap hardwareMap) {
-        servo = hardwareMap.get(Servo.class, "Claw");
-        servo.setDirection(Servo.Direction.FORWARD);
-        servo.setPosition(servoClosed);
+        claw = hardwareMap.get(Servo.class, "Claw");
+        claw.setDirection(Servo.Direction.FORWARD);
+        claw.setPosition(servoClosed);
+
+        wrist = hardwareMap.get(Servo.class, "Wrist");
+        wrist.setDirection(Servo.Direction.FORWARD);
+        wrist.setPosition(0.0);
     }
 
     public void closeClaw() {
-        servo.setPosition(servoClosed);
+        claw.setPosition(servoClosed);
     }
 
     public void openClaw() {
-        servo.setPosition(servoOpen);
+        claw.setPosition(servoOpen);
     }
 
     public double getClawPosition() {
-        return servo.getPosition();
+        return claw.getPosition();
     }
 
     public void toggleClaw() {
-        if (servo.getPosition() == servoClosed) {
-            servo.setPosition(servoOpen);
+        if (claw.getPosition() == servoClosed) {
+            claw.setPosition(servoOpen);
         } else {
-            servo.setPosition(servoClosed);
+            claw.setPosition(servoClosed);
         }
     }
+
+    public void turnWrist(double valueToSetTo) {
+        wrist.setPosition(valueToSetTo);
+    }
+
 }

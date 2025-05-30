@@ -5,7 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.motions.AbstractMotion;
+import org.firstinspires.ftc.teamcode.motions.SleepMotion;
 import org.firstinspires.ftc.teamcode.motions.TurnMotion;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 @Autonomous(name="myTest")
 //@Disabled
@@ -32,6 +38,10 @@ public class ImuTest extends LinearOpMode {
 
         int maxSteps = 3;
         int stepNumber = 1;
+        List motions = new ArrayList<AbstractMotion>();
+        motions.add(new TurnMotion(imuCalculator, 90.0, wheels, telemetry));
+        motions.add(new SleepMotion(imuCalculator, 1500, telemetry));
+        motions.add(new TurnMotion(imuCalculator, -90.0, wheels, telemetry));
 
         //RIGHT HAND RULE - +90 degrees = left, -90 degrees = right
         double turnAngle;
