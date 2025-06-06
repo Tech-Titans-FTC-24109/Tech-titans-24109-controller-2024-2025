@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ClawController {
-    private static final double servoOpen = 0.85;
-    private static final double servoClosed = 0.2;
+    private static final double clawOpen = 0.85;
+    private static final double clawClosed = 0.6;
     
     private Servo claw;
     private Servo wrist;
@@ -14,19 +14,19 @@ public class ClawController {
     public ClawController(@NonNull HardwareMap hardwareMap) {
         claw = hardwareMap.get(Servo.class, "Claw");
         claw.setDirection(Servo.Direction.FORWARD);
-        claw.setPosition(servoClosed);
+        claw.setPosition(clawClosed);
 
         wrist = hardwareMap.get(Servo.class, "Wrist");
         wrist.setDirection(Servo.Direction.FORWARD);
-        wrist.setPosition(0.0);
+        wrist.setPosition(0.5);
     }
 
     public void closeClaw() {
-        claw.setPosition(servoClosed);
+        claw.setPosition(clawClosed);
     }
 
     public void openClaw() {
-        claw.setPosition(servoOpen);
+        claw.setPosition(clawOpen);
     }
 
     public double getClawPosition() {
@@ -34,15 +34,18 @@ public class ClawController {
     }
 
     public void toggleClaw() {
-        if (claw.getPosition() == servoClosed) {
-            claw.setPosition(servoOpen);
+        if (claw.getPosition() == clawClosed) {
+            claw.setPosition(clawOpen);
         } else {
-            claw.setPosition(servoClosed);
+            claw.setPosition(clawClosed);
         }
     }
 
-    public void turnWrist(double valueToSetTo) {
-        wrist.setPosition(valueToSetTo);
+    public void moveWristLeft() {
+        wrist.setPosition(wrist.getPosition() - 0.05);
     }
 
+    public void moveWristRight() {
+        wrist.setPosition(wrist.getPosition() + 0.05);
+    }
 }

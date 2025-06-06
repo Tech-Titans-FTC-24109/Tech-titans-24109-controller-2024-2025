@@ -138,6 +138,12 @@ public class RobotController extends LinearOpMode {
 //            raisedArm=false;
 //        }
 
+        if (gamepad2.x) {
+            claw.moveWristLeft();
+        } else if (gamepad2.b) {
+            claw.moveWristRight();
+        }
+
 
         telemetry.addData("Pitch position", arm.getPitchPosition());
         telemetry.addData("Extension position", arm.getExtensionPosition());
