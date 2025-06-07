@@ -23,51 +23,72 @@ public class ImuTest extends LinearOpMode {
 
     private ImuUtility imuCalculator;
 
+    private MecanumWheelsController wheels;
+
     @Override
     public void runOpMode() throws InterruptedException {
-        MecanumWheelsController wheels = new MecanumWheelsController(hardwareMap);
+        wheels = new MecanumWheelsController(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
         imuCalculator = new ImuUtility(imu);
 
-        TurnMotion turnLeft = new TurnMotion(imuCalculator, 90.0, wheels, telemetry);
-        TurnMotion turnRight = new TurnMotion(imuCalculator, -90.0, wheels, telemetry);
-//        while (!isStarted()) {
-//
-//        }
+        //RIGHT HAND RULE - +90 degrees = left, -90 degrees = right
+
         waitForStart();
 
-        int maxSteps = 3;
-        int stepNumber = 1;
-        List motions = new ArrayList<AbstractMotion>();
-        motions.add(new TurnMotion(imuCalculator, 90.0, wheels, telemetry));
-        motions.add(new SleepMotion(imuCalculator, 1500, telemetry));
-        motions.add(new TurnMotion(imuCalculator, -90.0, wheels, telemetry));
+        int motionsIndex = 0;
+        List<AbstractMotion> motions = new ArrayList<AbstractMotion>();
 
-        //RIGHT HAND RULE - +90 degrees = left, -90 degrees = right
-        double turnAngle;
-        double startAngle = 0;
-        double targetAngle = 0;
+        motions.add(createLeftTurn(90));
+        motions.add(createSleep(1500));
+        motions.add(createRightTurn(90));
+        motions.add(createSleep(1500));
+        motions.add(createRightTurn(90));
+        motions.add(createSleep(1500));
+        motions.add(createLeftTurn(90));
 
-        while (opModeIsActive() && (stepNumber <= maxSteps)) {
-            if (stepNumber == 1) {
+        while (opModeIsActive() && (motionsIndex < motions.size())) {
 
-                if (!turnLeft.isInitialized()) {
-                    turnLeft.init();
-                }
-                if (turnLeft.move()) {
-                    stepNumber++;
-                }
-            } else if (stepNumber == 2) {
-                stepNumber++;
-                sleep(2000);
-            } else if (stepNumber == 3) {
-                if (!turnRight.isInitialized()) {
-                    turnRight.init();
-                }
-                if (turnRight.move()) {
-                    stepNumber++;
-                }
+            AbstractMotion motion = motions.get(motionsIndex);
+            if (!motion.isInitialized()) {
+                motion.init();
+            }
+            if (motion.move()) {
+                motionsIndex++;
             }
         }
     }
+
+    public TurnMotion createTurn(int angle) {
+        return new TurnMotion(imuCalculator, angle, wheels, telemetry);
+    }
+
+    public TurnMotion createLeftTurn(int angle) {
+        return createTurn(angle);
+    }
+
+    public TurnMotion createRightTurn(int angle) {
+        return createTurn(-angle);
+    }
+
+    public SleepMotion createSleep(int timeSleeping) {
+        return new SleepMotion(imuCalculator, timeSleeping, telemetry);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =)

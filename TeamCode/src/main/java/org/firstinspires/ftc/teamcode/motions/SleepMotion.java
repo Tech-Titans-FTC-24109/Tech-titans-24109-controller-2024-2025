@@ -25,9 +25,13 @@ public class SleepMotion extends AbstractMotion {
     @Override
     public boolean performMove() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - startTime <= sleepTime) {
+        if (currentTime - startTime < sleepTime) {
+            telemetry.addData("Sleep Time Remaining", sleepTime - (currentTime - startTime));
+            telemetry.update();
             return false;
         }
+        telemetry.addLine("Sleep Time Finished");
+        telemetry.update();
         return true;
     }
 }
