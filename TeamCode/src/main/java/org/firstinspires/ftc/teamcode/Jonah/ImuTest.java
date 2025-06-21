@@ -41,10 +41,7 @@ public class ImuTest extends LinearOpMode {
         motions.add(createLeftTurn(90));
         motions.add(createSleep(1500));
         motions.add(createRightTurn(90));
-        motions.add(createSleep(1500));
-        motions.add(createRightTurn(90));
-        motions.add(createSleep(1500));
-        motions.add(createLeftTurn(90));
+
 
         while (opModeIsActive() && (motionsIndex < motions.size())) {
 

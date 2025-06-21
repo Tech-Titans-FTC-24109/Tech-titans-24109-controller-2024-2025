@@ -13,6 +13,7 @@ public class TurnMotion extends AbstractMotion {
     private final double turnAngle;
     private double targetAngle;
     private final Telemetry telemetry;
+    private final PidController pidController;
 
     public TurnMotion(ImuUtility imuUtility, double turnAngle,
                       MecanumWheelsController wheels, Telemetry telemetry) {
@@ -22,6 +23,7 @@ public class TurnMotion extends AbstractMotion {
         this.targetAngle = 0;
         this.wheels = wheels;
         this.telemetry = telemetry;
+        this.pidController = new PidController(0.03, 0);
     }
 
     @Override
@@ -40,8 +42,9 @@ public class TurnMotion extends AbstractMotion {
             return true;
         }
         else {
-            double leftPower = imuCalculator.calculatePower(remainingAngle);
-            double rightPower = leftPower * -1;
+            double powerValue = pidController.calculatePower(remainingAngle, System.currentTimeMillis());
+            double leftPower = powerValue;
+            double rightPower = -powerValue;
             wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
 
             telemetry.addData("current angle!", currentAngle);

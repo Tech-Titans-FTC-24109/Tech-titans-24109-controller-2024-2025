@@ -23,20 +23,6 @@ public class ImuUtility {
         );
     }
 
-    /**
-     * Calculates target angle to turn to
-     * @param angle remaining angle in degrees to turn
-     * @return power required to turn to angle
-     */
-    public double calculatePower(double angle){
-        if (angle > 0){
-            return  0.2;
-        }
-        else {
-            return  -0.2;
-        }
-    }
-
     public double getCurrentAngle(){
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
 
