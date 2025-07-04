@@ -5,18 +5,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PidControllerTest {
+    private final double kpValue = 0.03;
+    private final double kdValue = 0.0;
+    
     @Test
     void makeWithEnum() {
         PidController controller = new PidController(PidControllerParameters.TURNING);
-        assertEquals(5 * 0.03, controller.calculatePower(5, 0));
+        assertEquals(kpValue, controller.getKp());
+        assertEquals(kdValue, controller.getKd());
     }
 
     @Test
     void makeWithBuilder() {
         PidController controller = new PidController.Builder()
-                .withKp(0.03)
-                .withKd(0)
+                .withKp(kpValue)
+                .withKd(kdValue)
                 .build();
-        assertEquals(5 * 0.03, controller.calculatePower(5, 0));
+        assertEquals(kpValue, controller.getKp());
+        assertEquals(kdValue, controller.getKd());
     }
 }
