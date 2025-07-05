@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.motions;
 
 /**
- * An enum that can be used to create an {@link PidController} with preset values
+ * An enum that can be used to create a {@link PidController} with preset values
  * for kp and kd
  */
 public enum PidControllerParameters {
