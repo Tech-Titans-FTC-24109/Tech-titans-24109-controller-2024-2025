@@ -71,7 +71,6 @@ public class PidController {
     }
 
     public double getKd() {
-
         return kd;
     }
 }

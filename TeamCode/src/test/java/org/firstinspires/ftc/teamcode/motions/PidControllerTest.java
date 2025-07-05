@@ -5,23 +5,30 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PidControllerTest {
-    private final double kpValue = 0.03;
-    private final double kdValue = 0.0;
+    private static final double KP_VALUE_TO_TEST = 0.03;
+    private static final double KD_VALUE_TO_TEST = 0.0;
     
     @Test
     void makeWithEnum() {
         PidController controller = new PidController(PidControllerParameters.TURNING);
-        assertEquals(kpValue, controller.getKp());
-        assertEquals(kdValue, controller.getKd());
+        assertEquals(PidControllerParameters.TURNING.getKp(), controller.getKp());
+        assertEquals(PidControllerParameters.TURNING.getKd(), controller.getKd());
     }
 
     @Test
     void makeWithBuilder() {
         PidController controller = new PidController.Builder()
-                .withKp(kpValue)
-                .withKd(kdValue)
+                .withKp(KP_VALUE_TO_TEST)
+                .withKd(KD_VALUE_TO_TEST)
                 .build();
-        assertEquals(kpValue, controller.getKp());
-        assertEquals(kdValue, controller.getKd());
+        assertEquals(KP_VALUE_TO_TEST, controller.getKp());
+        assertEquals(KD_VALUE_TO_TEST, controller.getKd());
+    }
+
+    @Test
+    void makeWithConstructor() {
+        PidController controller = new PidController(KP_VALUE_TO_TEST, KD_VALUE_TO_TEST);
+        assertEquals(KP_VALUE_TO_TEST, controller.getKp());
+        assertEquals(KD_VALUE_TO_TEST, controller.getKd());
     }
 }
