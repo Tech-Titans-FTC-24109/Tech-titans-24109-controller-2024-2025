@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Test;
 
 class PidControllerTest {
     private static final double KP_VALUE = 0.03;
+    private static final double KI_VALUE = 0.0;
     private static final double KD_VALUE = 0.0;
     
     @Test
     void makeWithEnum() {
         PidController controller = new PidController(PidControllerParameters.TURNING);
         assertEquals(PidControllerParameters.TURNING.getKp(), controller.getKp());
+        assertEquals(PidControllerParameters.TURNING.getKi(), controller.getKi());
         assertEquals(PidControllerParameters.TURNING.getKd(), controller.getKd());
     }
 
@@ -19,16 +21,19 @@ class PidControllerTest {
     void makeWithBuilder() {
         PidController controller = new PidController.Builder()
                 .withKp(KP_VALUE)
+                .withKi(KI_VALUE)
                 .withKd(KD_VALUE)
                 .build();
         assertEquals(KP_VALUE, controller.getKp());
+        assertEquals(KI_VALUE, controller.getKi());
         assertEquals(KD_VALUE, controller.getKd());
     }
 
     @Test
     void makeWithConstructor() {
-        PidController controller = new PidController(KP_VALUE, KD_VALUE);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE);
         assertEquals(KP_VALUE, controller.getKp());
+        assertEquals(KI_VALUE, controller.getKi());
         assertEquals(KD_VALUE, controller.getKd());
     }
 }
