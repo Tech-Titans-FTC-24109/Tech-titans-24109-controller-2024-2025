@@ -42,7 +42,7 @@ public class TurnMotion extends AbstractMotion {
             return true;
         }
         else {
-            double powerValue = pidController.calculatePower(remainingAngle, System.currentTimeMillis());
+            double powerValue = pidController.calculatePower(remainingAngle);
             double leftPower = powerValue;
             double rightPower = -powerValue;
             wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);

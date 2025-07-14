@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.motions;
 
 import androidx.annotation.NonNull;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 public class PidController {
 
     private final double kp;
@@ -10,6 +12,8 @@ public class PidController {
 
     private double integral;
     private double previousError;
+
+    private long previousTime = 0;
 
     /**
      * Construct a {@code PidController} instance with the given kp and kd values
@@ -70,10 +74,10 @@ public class PidController {
      * Calculate the power with the kp and kd values set in the object
      *
      * @param error the error to be used in the calculation
-     * @param dt  the loop interval time to be used in the calculation
      * @return the calculated power with the given error and dt
      */
-    public double calculatePower(double error, long dt) {
+    public double calculatePower(double error) {
+        long dt = getTime();
         double proportional = error;
         integral += error * dt;
         double derivative = (error - previousError) / dt;
@@ -92,5 +96,14 @@ public class PidController {
 
     public double getKi() {
         return ki;
+    }
+
+    public long getTime() {
+        if (previousTime == 0) {
+            previousTime = System.currentTimeMillis()-10;
+        }
+        long calculatedTime = System.currentTimeMillis()-previousTime;
+        previousTime = System.currentTimeMillis();
+        return calculatedTime;
     }
 }
