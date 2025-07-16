@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.motions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static java.lang.Thread.sleep;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +44,7 @@ class PidControllerTest {
 
     @Test
     @DisplayName("WHEN CalculatePowerCalculatedAfterInterval EXPECT NewerValueToBeBigger")
-    void calculatePower() throws InterruptedException {
+    void calculatePower() {
         PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(1);
         assertTrue(value < controller.calculatePower(2));
@@ -61,7 +59,7 @@ class PidControllerTest {
 
     @Test
     @DisplayName("WHEN TestingKi EXPECT ValueToBeRight")
-    void testKi() throws InterruptedException {
+    void testKi() {
         PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(ERROR);
         assertTrue(value < controller.calculatePower(ERROR));
@@ -69,7 +67,7 @@ class PidControllerTest {
 
     @Test
     @DisplayName("WHEN TestingKd EXPECT ValueToBeRight")
-    void testKd() throws InterruptedException {
+    void testKd() {
         PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(1);
         assertTrue(value < controller.calculatePower(2));
