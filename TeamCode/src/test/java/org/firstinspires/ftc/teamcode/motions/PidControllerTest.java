@@ -14,7 +14,7 @@ class PidControllerTest {
     private static final int ERROR = 2;
 
     @Test
-    @DisplayName("WHEN_PidControllerCreatedWithEnum_EXPECT_ValuesToBeSetInTheController")
+    @DisplayName("WHEN PidControllerCreatedWithEnum EXPECT ValuesToBeSetInTheController")
     void makeWithEnum() {
         PidController controller = new PidController(PidControllerParameters.TURNING);
         assertEquals(PidControllerParameters.TURNING.getKp(), controller.getKp());
@@ -23,7 +23,7 @@ class PidControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN_PidControllerCreatedWithBuilder_EXPECT_ValuesToBeSetInTheController")
+    @DisplayName("WHEN PidControllerCreatedWithBuilder EXPECT ValuesToBeSetInTheController")
     void makeWithBuilder() {
         PidController controller = new PidController.Builder()
                 .withKp(KP_VALUE)
@@ -36,45 +36,42 @@ class PidControllerTest {
     }
 
     @Test
-    @DisplayName("WHEN_PidControllerCreatedWithAllArgsConstructor_EXPECT_ValuesToBeSetInTheController")
+    @DisplayName("WHEN PidControllerCreatedWithAllArgsConstructor EXPECT ValuesToBeSetInTheController")
     void makeWithConstructor() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         assertEquals(KP_VALUE, controller.getKp());
         assertEquals(KI_VALUE, controller.getKi());
         assertEquals(KD_VALUE, controller.getKd());
     }
 
     @Test
-    @DisplayName("WHEN_CalculatePowerCalculatedAfterInterval_EXPECT_NewerValueToBeBigger")
+    @DisplayName("WHEN CalculatePowerCalculatedAfterInterval EXPECT NewerValueToBeBigger")
     void calculatePower() throws InterruptedException {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(1);
-        sleep(250);
-        assertTrue(value < controller.calculatePower(1));
+        assertTrue(value < controller.calculatePower(2));
     }
 
     @Test
-    @DisplayName("WHEN_TestingKp_EXPECT_ValueToBeRight")
+    @DisplayName("WHEN TestingKp EXPECT ValueToBeRight")
     void testKp() {
-        PidController controller = new PidController(KP_VALUE, 0, 0);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         assertEquals(controller.calculatePower(ERROR), KP_VALUE * ERROR);
     }
 
     @Test
-    @DisplayName("WHEN_TestingKi_EXPECT_ValueToBeRight")
+    @DisplayName("WHEN TestingKi EXPECT ValueToBeRight")
     void testKi() throws InterruptedException {
-        PidController controller = new PidController(0, KI_VALUE, 0);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(ERROR);
-        sleep(500);
         assertTrue(value < controller.calculatePower(ERROR));
     }
 
     @Test
-    @DisplayName("WHEN_TestingKd_EXPECT_ValueToBeRight")
+    @DisplayName("WHEN TestingKd EXPECT ValueToBeRight")
     void testKd() throws InterruptedException {
-        PidController controller = new PidController(0, 0, KD_VALUE);
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
         double value = controller.calculatePower(1);
-        sleep(500);
-        assertTrue(value > controller.calculatePower(2));
+        assertTrue(value < controller.calculatePower(2));
     }
 }

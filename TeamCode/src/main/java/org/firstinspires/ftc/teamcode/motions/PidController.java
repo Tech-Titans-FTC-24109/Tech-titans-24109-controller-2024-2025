@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.motions;
 
 import androidx.annotation.NonNull;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
+import java.util.function.DoubleSupplier;
 
 public class PidController {
 
@@ -13,7 +13,7 @@ public class PidController {
     private double integral;
     private double previousError;
 
-    private long previousTime = 0;
+    private final DoubleSupplier timeService;
 
     /**
      * Construct a {@code PidController} instance with the given kp and kd values
@@ -21,10 +21,11 @@ public class PidController {
      * @param kp The kp value to be used by the controller
      * @param kd The kd value to be used by the controller
      */
-    public PidController(double kp, double ki, double kd) {
+    public PidController(double kp, double ki, double kd, DoubleSupplier timeService) {
         this.kp = kp;
         this.kd = kd;
         this.ki = ki;
+        this.timeService = timeService;
     }
 
     /**
@@ -34,9 +35,7 @@ public class PidController {
      * @param values The given enum to be used to preset the kp and kd values
      */
     public PidController(@NonNull PidControllerParameters values) {
-        this.kp = values.getKp();
-        this.ki = values.getKi();
-        this.kd = values.getKd();
+        this(values.getKp(), values.getKi(), values.getKd(), new NormalTimeService());
     }
 
     /**
@@ -46,6 +45,7 @@ public class PidController {
         private double kp;
         private double ki;
         private double kd;
+        private DoubleSupplier timeService = new NormalTimeService();
 
         public Builder withKp(double kp) {
             this.kp = kp;
@@ -62,11 +62,16 @@ public class PidController {
             return this;
         }
 
+        public Builder withTimeService(DoubleSupplier timeService) {
+            this.timeService = timeService;
+            return this;
+        }
+
         public PidController build() {
             if (kp == 0 && kd == 0 && ki == 0) {
                 throw new IllegalStateException("Missing either kp, ki, or kd");
             }
-            return new PidController(kp, ki, kd);
+            return new PidController(kp, ki, kd, timeService);
         }
     }
 
@@ -77,10 +82,14 @@ public class PidController {
      * @return the calculated power with the given error and dt
      */
     public double calculatePower(double error) {
-        long dt = getTime();
         double proportional = error;
+        double dt = timeService.getAsDouble();
         integral += error * dt;
         double derivative = (error - previousError) / dt;
+        if (dt == 0) {
+            integral = 0;
+            derivative = 0;
+        }
         double output = kp * proportional + ki * integral + kd * derivative;
         previousError = error;
         return output;
@@ -96,14 +105,5 @@ public class PidController {
 
     public double getKi() {
         return ki;
-    }
-
-    public long getTime() {
-        if (previousTime == 0) {
-            previousTime = System.currentTimeMillis()-10;
-        }
-        long calculatedTime = System.currentTimeMillis()-previousTime;
-        previousTime = System.currentTimeMillis();
-        return calculatedTime;
     }
 }
