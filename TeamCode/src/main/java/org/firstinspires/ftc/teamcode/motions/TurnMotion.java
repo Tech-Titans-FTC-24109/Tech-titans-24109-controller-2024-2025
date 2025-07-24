@@ -23,7 +23,7 @@ public class TurnMotion extends AbstractMotion {
         this.targetAngle = 0;
         this.wheels = wheels;
         this.telemetry = telemetry;
-        this.pidController = new PidController(0.03, 0, 0, new NormalTimeService());
+        this.pidController = new PidController(0.03, 0, 0, new TimeService());
     }
 
     @Override

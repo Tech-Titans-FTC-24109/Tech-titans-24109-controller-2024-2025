@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.motions;
 
-import java.util.function.DoubleSupplier;
-
-public class NormalTimeService implements DoubleSupplier {
+public class TimeService implements ElapsedTimeSupplier {
     private long previousTime = 0;
 
     @Override
-    public double getAsDouble() {
+    public long getAsLong() {
         long time = System.currentTimeMillis();
         if (previousTime == 0) {
             previousTime = time;

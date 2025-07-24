@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.motions;
 
 import androidx.annotation.NonNull;
 
-import java.util.function.DoubleSupplier;
-
 public class PidController {
 
     private final double kp;
@@ -13,15 +11,17 @@ public class PidController {
     private double integral;
     private double previousError;
 
-    private final DoubleSupplier timeService;
+    private final ElapsedTimeSupplier timeService;
 
     /**
      * Construct a {@code PidController} instance with the given kp and kd values
      *
      * @param kp The kp value to be used by the controller
+     * @param ki The ki value to be used by the controller
      * @param kd The kd value to be used by the controller
+     * @param timeService The elapsedTimeSupplier to be used by the controller to get the elapsed time
      */
-    public PidController(double kp, double ki, double kd, DoubleSupplier timeService) {
+    public PidController(double kp, double ki, double kd, ElapsedTimeSupplier timeService) {
         this.kp = kp;
         this.kd = kd;
         this.ki = ki;
@@ -33,9 +33,10 @@ public class PidController {
      * {@link PidControllerParameters}
      *
      * @param values The given enum to be used to preset the kp and kd values
+     * @param timeService The elapsedTimeSupplier to be used by the controller to get the elapsed time
      */
-    public PidController(@NonNull PidControllerParameters values) {
-        this(values.getKp(), values.getKi(), values.getKd(), new NormalTimeService());
+    public PidController(@NonNull PidControllerParameters values, ElapsedTimeSupplier timeService) {
+        this(values.getKp(), values.getKi(), values.getKd(), timeService);
     }
 
     /**
@@ -45,7 +46,7 @@ public class PidController {
         private double kp;
         private double ki;
         private double kd;
-        private DoubleSupplier timeService = new NormalTimeService();
+        private ElapsedTimeSupplier timeService;
 
         public Builder withKp(double kp) {
             this.kp = kp;
@@ -62,7 +63,7 @@ public class PidController {
             return this;
         }
 
-        public Builder withTimeService(DoubleSupplier timeService) {
+        public Builder withTimeService(ElapsedTimeSupplier timeService) {
             this.timeService = timeService;
             return this;
         }
@@ -70,6 +71,9 @@ public class PidController {
         public PidController build() {
             if (kp == 0 && kd == 0 && ki == 0) {
                 throw new IllegalStateException("Missing either kp, ki, or kd");
+            }
+            if (timeService == null) {
+                throw new IllegalStateException("Missing timeService");
             }
             return new PidController(kp, ki, kd, timeService);
         }
@@ -83,7 +87,7 @@ public class PidController {
      */
     public double calculatePower(double error) {
         double proportional = error;
-        double dt = timeService.getAsDouble();
+        long dt = timeService.getAsLong();
         integral += error * dt;
         double derivative = (error - previousError) / dt;
         if (dt == 0) {

@@ -14,7 +14,7 @@ class PidControllerTest {
     @Test
     @DisplayName("WHEN PidControllerCreatedWithEnum EXPECT ValuesToBeSetInTheController")
     void makeWithEnum() {
-        PidController controller = new PidController(PidControllerParameters.TURNING);
+        PidController controller = PidControllerFactory.createWithEnumWithoutTimeService(PidControllerParameters.TURNING);
         assertEquals(PidControllerParameters.TURNING.getKp(), controller.getKp());
         assertEquals(PidControllerParameters.TURNING.getKi(), controller.getKi());
         assertEquals(PidControllerParameters.TURNING.getKd(), controller.getKd());
@@ -27,6 +27,7 @@ class PidControllerTest {
                 .withKp(KP_VALUE)
                 .withKi(KI_VALUE)
                 .withKd(KD_VALUE)
+                .withTimeService(new TimeService())
                 .build();
         assertEquals(KP_VALUE, controller.getKp());
         assertEquals(KI_VALUE, controller.getKi());
@@ -36,7 +37,7 @@ class PidControllerTest {
     @Test
     @DisplayName("WHEN PidControllerCreatedWithAllArgsConstructor EXPECT ValuesToBeSetInTheController")
     void makeWithConstructor() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new MockedTimeService(0, 500));
         assertEquals(KP_VALUE, controller.getKp());
         assertEquals(KI_VALUE, controller.getKi());
         assertEquals(KD_VALUE, controller.getKd());
@@ -45,7 +46,7 @@ class PidControllerTest {
     @Test
     @DisplayName("WHEN CalculatePowerCalculatedAfterInterval EXPECT NewerValueToBeBigger")
     void calculatePower() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new MockedTimeService(0, 500));
         double value = controller.calculatePower(1);
         assertTrue(value < controller.calculatePower(2));
     }
@@ -53,14 +54,14 @@ class PidControllerTest {
     @Test
     @DisplayName("WHEN TestingKp EXPECT ValueToBeRight")
     void testKp() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new MockedTimeService(0, 500));
         assertEquals(controller.calculatePower(ERROR), KP_VALUE * ERROR);
     }
 
     @Test
     @DisplayName("WHEN TestingKi EXPECT ValueToBeRight")
     void testKi() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new MockedTimeService(0, 500));
         double value = controller.calculatePower(ERROR);
         assertTrue(value < controller.calculatePower(ERROR));
     }
@@ -68,7 +69,7 @@ class PidControllerTest {
     @Test
     @DisplayName("WHEN TestingKd EXPECT ValueToBeRight")
     void testKd() {
-        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new SpoofedTimeService(500));
+        PidController controller = new PidController(KP_VALUE, KI_VALUE, KD_VALUE, new MockedTimeService(0, 500));
         double value = controller.calculatePower(1);
         assertTrue(value < controller.calculatePower(2));
     }
