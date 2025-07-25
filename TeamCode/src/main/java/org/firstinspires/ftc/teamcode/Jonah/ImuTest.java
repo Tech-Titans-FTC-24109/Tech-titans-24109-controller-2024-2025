@@ -47,6 +47,7 @@ public class ImuTest extends LinearOpMode {
 
             AbstractMotion motion = motions.get(motionsIndex);
             if (!motion.isInitialized()) {
+                telemetry.addLine(motion.toString());
                 motion.init();
             }
             if (motion.move()) {

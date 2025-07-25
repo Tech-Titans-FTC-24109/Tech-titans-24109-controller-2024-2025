@@ -34,4 +34,11 @@ public class SleepMotion extends AbstractMotion {
         telemetry.update();
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "SleepMotion{" +
+                "sleepTime=" + sleepTime +
+                '}';
+    }
 }

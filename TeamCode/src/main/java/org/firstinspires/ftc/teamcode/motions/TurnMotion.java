@@ -55,4 +55,11 @@ public class TurnMotion extends AbstractMotion {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "TurnMotion{" +
+                "targetAngle=" + targetAngle +
+                '}';
+    }
 }
