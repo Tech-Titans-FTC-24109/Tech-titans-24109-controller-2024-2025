@@ -10,7 +10,7 @@ public class MockedTimeService implements ElapsedTimeSupplier {
 
     @Override
     public long getAsLong() {
-        if (timesToSpoof.length == index) {
+        if (timesToSpoof.length <= index) {
             return timesToSpoof[timesToSpoof.length-1];
         }
         index++;
