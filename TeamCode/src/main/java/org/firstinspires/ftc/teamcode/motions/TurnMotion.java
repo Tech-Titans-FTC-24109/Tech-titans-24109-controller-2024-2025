@@ -23,7 +23,7 @@ public class TurnMotion extends AbstractMotion {
         this.targetAngle = 0;
         this.wheels = wheels;
         this.telemetry = telemetry;
-        this.pidController = new PidController(0.03, 0);
+        this.pidController = new PidController(0.03, 0, 0, new TimeService());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TurnMotion extends AbstractMotion {
             return true;
         }
         else {
-            double powerValue = pidController.calculatePower(remainingAngle, System.currentTimeMillis());
+            double powerValue = pidController.calculatePower(remainingAngle);
             double leftPower = powerValue;
             double rightPower = -powerValue;
             wheels.autoDrive(leftPower, leftPower, rightPower, rightPower);
