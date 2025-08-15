@@ -4,12 +4,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/**
+ * The NeveRest Classic 40 GearMotor, has a 40:1 output-to-input ratio.
+ * So it would be 280:7 pulses per revolution
+ * It also has 1120 ticks per revolution
+ */
 public class MecanumWheelsController {
+
+    private static final float SCALE_POWER = 0.6F;
+    private static final float WHEEL_CIRCUMFERENCE = 31.4F; // cm
+    private static final int TICKS_PER_REVOLUTION = 1120; // pulses is div by 4
+
     private DcMotor leftFront;
     private DcMotor leftBack;
     private DcMotor rightFront;
     private DcMotor rightBack;
-    private static final float scalePower = 0.6F;
+
 
     public MecanumWheelsController (HardwareMap hardwareMap) {
         leftFront = hardwareMap.get(DcMotor.class, "LeftFront");
@@ -21,6 +31,29 @@ public class MecanumWheelsController {
         leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    /**
+     * This method stops all motors and then resets all encoders one by one
+     */
+    public void resetEncoders() {
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    /**
+     * Uses an average of all the motor encoders' values to get the distance
+     * @return distance that's been traversed since the last reset of the
+     * encoders                                                        :)
+     */
+    public double getDistance() {
+        double lf = Math.abs(leftFront.getCurrentPosition());
+        double lb = Math.abs(leftBack.getCurrentPosition());
+        double rf = Math.abs(rightFront.getCurrentPosition());
+        double rb = Math.abs(rightBack.getCurrentPosition());
+        return (lf + lb + rf + rb) / 4;
     }
 
     public void applyPower(float x, float y, float turn) {
@@ -36,10 +69,10 @@ public class MecanumWheelsController {
             turn = 0;
         }
 
-        float leftFrontPower  = (y + turn + x) * scalePower;
-        float leftBackPower   = (y + turn - x) * scalePower;
-        float rightFrontPower = (y - turn - x) * scalePower;
-        float rightBackPower  = (y - turn + x) * scalePower;
+        float leftFrontPower  = (y + turn + x) * SCALE_POWER;
+        float leftBackPower   = (y + turn - x) * SCALE_POWER;
+        float rightFrontPower = (y - turn - x) * SCALE_POWER;
+        float rightBackPower  = (y - turn + x) * SCALE_POWER;
         float[] a = new float[]{Math.abs(leftFrontPower), Math.abs(leftBackPower), Math.abs(rightFrontPower), Math.abs(rightBackPower), 1};
 
         float max = a[0];

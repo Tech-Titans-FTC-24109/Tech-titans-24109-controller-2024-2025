@@ -8,21 +8,26 @@ public class MoveMotion extends AbstractMotion{
 
     private final MecanumWheelsController wheels;
     private final Telemetry telemetry;
+    private final double targetDistance;
+    private final PidController pidController;
 
-    public MoveMotion(MecanumWheelsController wheels, Telemetry telemetry) {
+    public MoveMotion(ImuUtility imuUtility, MecanumWheelsController wheels, Telemetry telemetry, double distance) {
 
         super();
         this.wheels = wheels;
         this.telemetry = telemetry;
+        this.targetDistance = distance;
+        this.pidController = new PidController(0.03, 0, 0, new TimeService());
     }
 
     @Override
     protected void initMotion() {
-        //idk wat ima do here
+        wheels.resetEncoders();
     }
 
     @Override
     protected boolean performMove() {
+        double currentDist =
         return false;
     }
 
