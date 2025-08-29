@@ -54,6 +54,17 @@ public class MecanumWheelsController {
         double rf = Math.abs(rightFront.getCurrentPosition());
         double rb = Math.abs(rightBack.getCurrentPosition());
         return (lf + lb + rf + rb) / 4;
+        // TODO - J & P - this should be improved to return a distance in cm
+        //      Currently it will return ticks/pulses - you would have to verify
+        //
+        //      How to verify and estimate:
+        //      - have the robot move forward (slowly!) for a certain duration
+        //          - you could allow for a couple of iterations in your opmode
+        //            loop and record the time in telemetry; also record the
+        //            current position
+        //      - you can measure the distance travelled and use the wheel
+        //        circumference constants above to calculate the rotations
+        //      - you can now calculate the distance per tick ;-)
     }
 
     public void applyPower(float x, float y, float turn) {

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.motions.AbstractMotion;
+import org.firstinspires.ftc.teamcode.motions.MoveMotion;
 import org.firstinspires.ftc.teamcode.motions.SleepMotion;
 import org.firstinspires.ftc.teamcode.motions.TurnMotion;
 
@@ -42,6 +43,9 @@ public class ImuTest extends LinearOpMode {
         motions.add(createSleep(1500));
         motions.add(createRightTurn(90));
 
+        // TODO - J & P - modify this scenario to include one or two MoveMotions
+        //                use the createDrive method (that you have to implement
+
 
         while (opModeIsActive() && (motionsIndex < motions.size())) {
 
@@ -71,6 +75,15 @@ public class ImuTest extends LinearOpMode {
     public SleepMotion createSleep(int timeSleeping) {
         return new SleepMotion(imuCalculator, timeSleeping, telemetry);
     }
+
+    /**
+     * TODO - J & P - provide JavaDoc
+     */
+    public MoveMotion createDrive(double distance) {
+        // TODO - J & P - implement similar to createTurn or createSleep
+        return null;
+    }
+
 }
 
 

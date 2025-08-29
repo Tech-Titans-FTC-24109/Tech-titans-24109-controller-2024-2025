@@ -27,7 +27,13 @@ public class MoveMotion extends AbstractMotion{
 
     @Override
     protected boolean performMove() {
-        double currentDist =
+        // TODO - J & P - use the MecanumWheelsController.getDistance() method
+        //
+        // - calculate the remaining distance
+        // - determine whether you are done or not:
+        //   - stop
+        //   - power motor - don't forget to use the pid controller
+        // - return appropriate value for this method
         return false;
     }
 
