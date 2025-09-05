@@ -4,7 +4,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 
-public class MoveMotion extends AbstractMotion{
+public class MoveMotion extends AbstractMotion {
+
+    public static final double MOVEMENT_ERROR = 2;
 
     private final MecanumWheelsController wheels;
     private final Telemetry telemetry;
@@ -23,19 +25,37 @@ public class MoveMotion extends AbstractMotion{
     @Override
     protected void initMotion() {
         wheels.resetEncoders();
+        wheels.runWithEncoders();
     }
 
     @Override
     protected boolean performMove() {
-        // TODO - J & P - use the MecanumWheelsController.getDistance() method
-        //
-        // - calculate the remaining distance
-        // - determine whether you are done or not:
-        //   - stop
-        //   - power motor - don't forget to use the pid controller
-        // - return appropriate value for this method
-        return false;
+        boolean isComplete;
+        double currentDistance = wheels.getDistance();
+        double remainingDistance = targetDistance - currentDistance;
+
+        if (Math.abs(remainingDistance) < MOVEMENT_ERROR) {
+            wheels.autoDrive(0, 0, 0, 0);
+            telemetry.addLine("stopped");
+            isComplete = true;
+        }
+        else {
+            //implement PID in this :D
+            //powers must be negative to move forward
+//            double powerValue = pidController.calculatePower(remainingDistance);
+            wheels.autoDrive(-0.75, -0.75, -0.75, -0.75);
+            telemetry.addData("current distance", currentDistance);
+            telemetry.addData("remaining distance", remainingDistance);
+            isComplete = false;
+        }
+        telemetry.update();
+        return isComplete;
     }
 
-
+    @Override
+    public String toString() {
+        return "MoveMotion{" +
+                "targetDistance=" + targetDistance +
+                '}';
+    }
 }

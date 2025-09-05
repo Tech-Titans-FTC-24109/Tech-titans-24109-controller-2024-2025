@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class MecanumWheelsController {
 
     private static final float SCALE_POWER = 0.6F;
-    private static final float WHEEL_CIRCUMFERENCE = 31.4F; // cm
+    private static final float WHEEL_CIRCUMFERENCE = 31.4159F; // cm
     private static final int TICKS_PER_REVOLUTION = 1120; // pulses is div by 4
 
     private DcMotor leftFront;
@@ -43,6 +43,13 @@ public class MecanumWheelsController {
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    public void runWithEncoders() {
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     /**
      * Uses an average of all the motor encoders' values to get the distance
      * @return distance that's been traversed since the last reset of the
@@ -53,18 +60,7 @@ public class MecanumWheelsController {
         double lb = Math.abs(leftBack.getCurrentPosition());
         double rf = Math.abs(rightFront.getCurrentPosition());
         double rb = Math.abs(rightBack.getCurrentPosition());
-        return (lf + lb + rf + rb) / 4;
-        // TODO - J & P - this should be improved to return a distance in cm
-        //      Currently it will return ticks/pulses - you would have to verify
-        //
-        //      How to verify and estimate:
-        //      - have the robot move forward (slowly!) for a certain duration
-        //          - you could allow for a couple of iterations in your opmode
-        //            loop and record the time in telemetry; also record the
-        //            current position
-        //      - you can measure the distance travelled and use the wheel
-        //        circumference constants above to calculate the rotations
-        //      - you can now calculate the distance per tick ;-)
+        return (((lf + lb + rf + rb) / 4) / TICKS_PER_REVOLUTION) * WHEEL_CIRCUMFERENCE;
     }
 
     public void applyPower(float x, float y, float turn) {

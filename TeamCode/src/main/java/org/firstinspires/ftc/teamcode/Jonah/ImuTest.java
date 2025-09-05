@@ -14,7 +14,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name="myTest")
+@Autonomous(name="imuTest")
 //@Disabled
 public class ImuTest extends LinearOpMode {
 
@@ -39,12 +39,8 @@ public class ImuTest extends LinearOpMode {
         int motionsIndex = 0;
         List<AbstractMotion> motions = new ArrayList<AbstractMotion>();
 
-        motions.add(createLeftTurn(90));
+        motions.add(createDrive(30));
         motions.add(createSleep(1500));
-        motions.add(createRightTurn(90));
-
-        // TODO - J & P - modify this scenario to include one or two MoveMotions
-        //                use the createDrive method (that you have to implement
 
 
         while (opModeIsActive() && (motionsIndex < motions.size())) {
@@ -53,6 +49,8 @@ public class ImuTest extends LinearOpMode {
             if (!motion.isInitialized()) {
                 telemetry.addLine(motion.toString());
                 motion.init();
+                telemetry.addLine("completed init");
+                telemetry.update();
             }
             if (motion.move()) {
                 motionsIndex++;
@@ -75,13 +73,12 @@ public class ImuTest extends LinearOpMode {
     public SleepMotion createSleep(int timeSleeping) {
         return new SleepMotion(imuCalculator, timeSleeping, telemetry);
     }
-
     /**
      * TODO - J & P - provide JavaDoc
+     * 
      */
     public MoveMotion createDrive(double distance) {
-        // TODO - J & P - implement similar to createTurn or createSleep
-        return null;
+        return new MoveMotion(imuCalculator, wheels, telemetry, distance);
     }
 
 }
