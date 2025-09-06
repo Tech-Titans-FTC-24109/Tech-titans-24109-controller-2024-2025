@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 
 public class MoveMotion extends AbstractMotion {
 
-    public static final double MOVEMENT_ERROR = 2;
+    public static final double MOVEMENT_ERROR = 1;
 
     private final MecanumWheelsController wheels;
     private final Telemetry telemetry;
@@ -42,8 +42,9 @@ public class MoveMotion extends AbstractMotion {
         else {
             //implement PID in this :D
             //powers must be negative to move forward
-//            double powerValue = pidController.calculatePower(remainingDistance);
-            wheels.autoDrive(-0.75, -0.75, -0.75, -0.75);
+            double powerValue = pidController.calculatePower(remainingDistance) * -1;
+            wheels.autoDrive(powerValue, powerValue, powerValue, powerValue);
+            telemetry.addData("power", powerValue);
             telemetry.addData("current distance", currentDistance);
             telemetry.addData("remaining distance", remainingDistance);
             isComplete = false;

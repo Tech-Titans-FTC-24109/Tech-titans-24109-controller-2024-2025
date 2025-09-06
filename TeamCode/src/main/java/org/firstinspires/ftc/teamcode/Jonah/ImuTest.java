@@ -39,7 +39,7 @@ public class ImuTest extends LinearOpMode {
         int motionsIndex = 0;
         List<AbstractMotion> motions = new ArrayList<AbstractMotion>();
 
-        motions.add(createDrive(30));
+        motions.add(createDrive(100));
         motions.add(createSleep(1500));
 
 
