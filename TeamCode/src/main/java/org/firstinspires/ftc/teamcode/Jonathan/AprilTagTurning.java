@@ -24,13 +24,15 @@ public class AprilTagTurning extends LinearOpMode {
         while (opModeIsActive()) {
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
 
-            if (!currentDetections.isEmpty()) {Addetag stuff
+            if (!currentDetections.isEmpty()) {
                 for (AprilTagDetection detection : currentDetections) {
-                    if (detection.id == 1) {
+                    if (detection.id >= 20 && detection.id <= 24) {
                         telemetry.addData("Tag ID", detection.id);
                         telemetry.addData("Tag Pose X", detection.ftcPose.x);
                         telemetry.addData("Tag Pose Y", detection.ftcPose.y);
                         telemetry.addData("Tag Pose Z", detection.ftcPose.z);
+                    } else {
+                        telemetry.addLine("Unknown april tag detected");
                     }
                 }
             }
