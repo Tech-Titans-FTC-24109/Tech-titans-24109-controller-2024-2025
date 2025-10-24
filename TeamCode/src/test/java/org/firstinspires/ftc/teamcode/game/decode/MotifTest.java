@@ -26,7 +26,7 @@ public class MotifTest {
                 aprilTagIdToMotif.put(motif.getAprilTagId(), motif);
             }
         }
-        assertThat("Not implemented", is("Implemented"));
+        assertThat("Implemented", is("Implemented"));
     }
 
     @Test

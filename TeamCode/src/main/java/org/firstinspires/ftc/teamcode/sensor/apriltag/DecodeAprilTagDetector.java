@@ -44,12 +44,28 @@ public class DecodeAprilTagDetector implements IDecodeAprilTagDetector {
 
     @Override
     public boolean isMotifDetected() {
+        if (isStarted()) {
+            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
+            for (AprilTagDetection aprilTag : aprilTags) {
+                if (aprilTag.id >= 21 && aprilTag.id <= 23) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public Motif getMotif() {
-        return null;
+        if (isStarted()) {
+            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
+            for (AprilTagDetection aprilTag : aprilTags) {
+                if (Motif.getByAprilTagId(aprilTag.id) != Motif.Unknown) {
+                    return Motif.getByAprilTagId(aprilTag.id);
+                }
+            }
+        }
+        return Motif.Unknown;
     }
 
     @Override

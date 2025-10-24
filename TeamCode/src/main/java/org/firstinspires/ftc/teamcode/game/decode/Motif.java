@@ -7,17 +7,16 @@ public enum Motif {
     GPP(21),
     Unknown(0);
 
-    private final int aprilTagId = 0;
+    private final int aprilTagId;
 
     // Values for the aprilTagIds can be found at
     // https://ftc-resources.firstinspires.org/ftc/field/apriltag-art
     private Motif(int aprilTagId) {
-        // TODO store the aprilTagId
+        this.aprilTagId = aprilTagId;
     }
 
     public int getAprilTagId() {
-        // TODO implement
-        return 0;
+        return this.aprilTagId;
     }
 
     /**
@@ -27,13 +26,14 @@ public enum Motif {
      *
      * @param aprilTagId the aprilTagId for which to get the Motif for
      * @return the Motif that corresponds to the aprilTagId provided, or the
-     *      Unknown Motif, when such a Motif does not exist
+     * Unknown Motif, when such a Motif does not exist
      */
     public static Motif getByAprilTagId(int aprilTagId) {
-        // TODO implement
-        // hints:
-        //      Motif.values() returns an array Motif[]
-        //      you can iterate over an array using a for loop or foreach
+        for (Motif motifItem : Motif.values()) {
+            if (motifItem.getAprilTagId() == aprilTagId) {
+                return motifItem;
+            }
+        }
         return Unknown;
     }
 }
