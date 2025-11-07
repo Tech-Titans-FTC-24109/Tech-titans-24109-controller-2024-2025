@@ -24,7 +24,7 @@ public class OpmodeInheritanceTest {
 
         // TODO - which assert is correct
         // a) base class and declared type of variable opmode (ExpendableOpMode)
-        // assertThat(opmode.getExtendableField(), is("Extendable"));
+        assertThat(opmode.getExtendableField(), is("Extendable"));
         // b) actual type of variable opmode (MatchOpmode)
         // assertThat(opmode.getExtendableField(), is(100));
     }
@@ -38,7 +38,7 @@ public class OpmodeInheritanceTest {
         // a) base class and declared type of variable opmode (ExpendableOpMode)
         // assertThat(opmode.getExtendableField2(), is("Extendable"));
         // b) actual type of variable opmode (MatchOpmode)
-        // assertThat(opmode.getExtendableField2(), is(100));
+         assertThat(opmode.getExtendableField2(), is(100));
     }
 
     public static class ExtendableOpmode {
