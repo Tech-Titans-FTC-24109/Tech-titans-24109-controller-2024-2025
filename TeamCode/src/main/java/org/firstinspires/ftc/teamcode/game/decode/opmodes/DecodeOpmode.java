@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.game.decode.DecodeGame;
 import org.firstinspires.ftc.teamcode.game.decode.DecodeRobot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class DecodeOpmode extends ExtendableOpmode {
@@ -17,12 +16,12 @@ public abstract class DecodeOpmode extends ExtendableOpmode {
 
     private Game game;
 
+    // TODO - should this move to Game? Or Robot as it is the auto strategy?
+    private List<IAction> actions = new ArrayList<IAction>();
 
     public void addAutoAction(IAction action) {
         actions.add(action);
     }
-
-    private List<IAction> actions = new ArrayList<IAction>();
 
     @Override
     protected List<IAction> getAutoActions() {
