@@ -19,7 +19,7 @@ public abstract class DecodeOpmode extends ExtendableOpmode {
     // TODO - should this move to Game? Or Robot as it is the auto strategy?
     private List<IAction> actions = new ArrayList<IAction>();
 
-    public void addAutoAction(IAction action) {
+    protected void addAutoAction(IAction action) {
         actions.add(action);
     }
 
