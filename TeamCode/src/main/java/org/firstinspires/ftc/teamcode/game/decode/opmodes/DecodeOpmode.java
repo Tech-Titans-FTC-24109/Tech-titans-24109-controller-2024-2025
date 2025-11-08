@@ -12,8 +12,11 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class DecodeOpmode extends ExtendableOpmode {
-    Robot robot = new DecodeRobot();
-    Game game = new DecodeGame();
+
+    private DecodeRobot robot;
+
+    private Game game;
+
 
     public void addAutoAction(IAction action) {
         actions.add(action);
@@ -24,5 +27,19 @@ public abstract class DecodeOpmode extends ExtendableOpmode {
     @Override
     protected List<IAction> getAutoActions() {
         return actions;
+    }
+
+    @Override
+    protected void createGame() {
+        this.game = new DecodeGame();
+    }
+
+    @Override
+    protected void createRobot() {
+        this.robot = new DecodeRobot(this.hardwareMap, this.telemetry);
+    }
+
+    public DecodeRobot getRobot() {
+        return robot;
     }
 }

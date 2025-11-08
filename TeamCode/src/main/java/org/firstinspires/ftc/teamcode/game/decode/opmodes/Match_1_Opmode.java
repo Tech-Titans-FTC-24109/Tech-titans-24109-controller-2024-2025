@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.actions.IAction;
 import org.firstinspires.ftc.teamcode.actions.TelemetryAction;
+import org.firstinspires.ftc.teamcode.game.decode.DecodeRobot;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,11 @@ import java.util.List;
 public class Match_1_Opmode extends DecodeOpmode {
 
     @Override
-    protected void createAutoActions() {
-        addAutoAction(new TelemetryAction());
+    protected void createMatch() {
+
+        DecodeRobot robot = getRobot();
+        // create autonomous actions
+        addAutoAction(new TelemetryAction("Floeppy", robot.getTelemetry()));
+        addAutoAction(new TelemetryAction("Doodle", robot.getTelemetry()));
     }
 }
