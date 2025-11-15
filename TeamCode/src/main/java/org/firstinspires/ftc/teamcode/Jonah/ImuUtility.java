@@ -16,7 +16,7 @@ public class ImuUtility {
         imu.initialize(
             new IMU.Parameters(
                 new RevHubOrientationOnRobot(
-                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                    RevHubOrientationOnRobot.LogoFacingDirection.UP,
                     RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
                 )
             )
