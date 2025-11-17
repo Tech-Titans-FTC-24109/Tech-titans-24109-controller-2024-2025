@@ -63,9 +63,9 @@ public class Imu {
         @Override
         public YawPitchRollAngles getRobotYawPitchRollAngles() {
             // TODO - implement
-            YawPitchRollAngles orientation = this.imu.getRobotYawPitchRollAngles();
+            YawPitchRollAngles yprAngles = this.imu.getRobotYawPitchRollAngles();
             //orientation.getYaw()
-            return null;
+            return yprAngles;
         }
 
         @Override

@@ -32,8 +32,43 @@ public class TestIMU implements IMU {
                         }
                     });
 
-    public static IMU createIMU() {
+    public static final Manufacturer MANUFACTURER = Manufacturer.Other;
+    public static final String DEVICE_NAME = "Test IMU";
+    public static final String CONNECTION_INFO = "Connection";
+    public static final int VERSION = 24109;
+
+    public static final YawPitchRollAngles DEFAULT_YPR_ANGLES = new YawPitchRollAngles(
+            AngleUnit.DEGREES,
+            0.0d, 0.0d, 0.0d,
+            0L
+    );
+
+    private final YawPitchRollAngles[] yprAngles;
+
+    private int indexYpr = 0;
+
+    public static TestIMU createIMU() {
         return new TestIMU();
+    }
+
+    public static TestIMU createIMU(AngleUnit angleUnit, double... yaws) {
+        YawPitchRollAngles[] yawPitchRollAngles = new YawPitchRollAngles[yaws.length];
+        for (int i = 0; i < yaws.length; i++) {
+            yawPitchRollAngles[i] = new YawPitchRollAngles(
+                    angleUnit,
+                    yaws[i], 0.0d, 0.0d,
+                    i * 1000L
+            );
+        }
+        return new TestIMU(yawPitchRollAngles);
+    }
+
+    private TestIMU() {
+        this(DEFAULT_YPR_ANGLES);
+    }
+
+    private TestIMU(YawPitchRollAngles... yawPitchRollAngles) {
+        this.yprAngles = yawPitchRollAngles;
     }
 
     @Override
@@ -43,12 +78,19 @@ public class TestIMU implements IMU {
 
     @Override
     public void resetYaw() {
-
     }
 
     @Override
     public YawPitchRollAngles getRobotYawPitchRollAngles() {
-        return null;
+        return this.yprAngles[indexYpr];
+    }
+
+    public boolean nextYawPitchRollAngles() {
+        if (this.indexYpr < (this.yprAngles.length - 1)) {
+            this.indexYpr++;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -68,22 +110,22 @@ public class TestIMU implements IMU {
 
     @Override
     public Manufacturer getManufacturer() {
-        return null;
+        return MANUFACTURER;
     }
 
     @Override
     public String getDeviceName() {
-        return "";
+        return DEVICE_NAME;
     }
 
     @Override
     public String getConnectionInfo() {
-        return "";
+        return CONNECTION_INFO;
     }
 
     @Override
     public int getVersion() {
-        return 0;
+        return VERSION;
     }
 
     @Override
