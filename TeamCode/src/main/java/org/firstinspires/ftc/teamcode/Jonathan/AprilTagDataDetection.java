@@ -40,7 +40,7 @@ Yaw     : Angle to camera view perpendicular to april tag
 
  */
 
-@Autonomous
+//@Autonomous
 public class AprilTagDataDetection extends LinearOpMode {
 
     @Override

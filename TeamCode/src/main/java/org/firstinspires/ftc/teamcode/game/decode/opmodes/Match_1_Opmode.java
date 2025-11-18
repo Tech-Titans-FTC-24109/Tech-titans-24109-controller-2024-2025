@@ -3,13 +3,16 @@ package org.firstinspires.ftc.teamcode.game.decode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.IMU;
 
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
 import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.actions.MotorAction;
+import org.firstinspires.ftc.teamcode.actions.ShooterAction;
 import org.firstinspires.ftc.teamcode.actions.TurnAction;
+import org.firstinspires.ftc.teamcode.controllers.ShooterWheelController;
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.decode.DecodeRobot;
 
@@ -32,5 +35,6 @@ public class Match_1_Opmode extends DecodeOpmode {
         addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
         addAutoAction(new TurnAction(imuCalculator, -90, new MecanumWheelsController(hardwareMap), telemetry));
         addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
+        addAutoAction(new ShooterAction(telemetry, new ShooterWheelController(hardwareMap), 1));
     }
 }
