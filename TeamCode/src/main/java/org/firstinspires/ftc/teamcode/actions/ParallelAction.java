@@ -41,6 +41,6 @@ public class ParallelAction implements ICompositeAction {
 
     @Override   // TODO implement
     public boolean isStopped() {
-        return ICompositeAction.super.isStopped();
+        return false;
     }
 }

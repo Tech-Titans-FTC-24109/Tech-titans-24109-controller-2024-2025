@@ -17,9 +17,7 @@ public interface IAction {
      *
      * @return true when initialized, otherwise false
      */
-    default boolean isInitialized() {
-        return true;
-    }
+    boolean isInitialized();
 
     /**
      * Perform one iteration of the actions. Returns true when TODO, otherwise false
@@ -49,7 +47,5 @@ public interface IAction {
      *
      * @return true when stopped, otherwise false
      */
-    default boolean isStopped() {
-        return stop();
-    }
+    boolean isStopped();
 }

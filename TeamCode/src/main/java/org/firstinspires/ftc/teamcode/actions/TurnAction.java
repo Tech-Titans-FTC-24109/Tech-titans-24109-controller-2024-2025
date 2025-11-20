@@ -17,6 +17,8 @@ public class TurnAction implements IAction {
     private final Telemetry telemetry;
     private final PidController pidController;
 
+    private boolean isInitialized = false;
+
     public TurnAction(ImuUtility imuUtility, double turnAngle,
                       MecanumWheelsController wheels, Telemetry telemetry) {
         this.imuCalculator = imuUtility;
@@ -31,7 +33,13 @@ public class TurnAction implements IAction {
     public boolean init() {
         imuCalculator.reset();
         targetAngle = imuCalculator.getCurrentAngle() + turnAngle;
-        return true;
+        isInitialized = true;
+        return isInitialized();
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return this.isInitialized;
     }
 
     @Override
@@ -67,6 +75,13 @@ public class TurnAction implements IAction {
 
     @Override
     public boolean stop() {
+        // TODO - implement
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        // TODO - implement
         return false;
     }
 }

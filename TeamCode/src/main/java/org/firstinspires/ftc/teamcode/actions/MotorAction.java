@@ -14,6 +14,8 @@ public class MotorAction implements IAction {
     private final double targetDistance;
     private final PidController pidController;
 
+    private boolean isInitialized = false;
+
     public MotorAction(ImuUtility imuUtility, MecanumWheelsController wheels, Telemetry telemetry, double distance) {
         this.wheels = wheels;
         this.telemetry = telemetry;
@@ -25,7 +27,13 @@ public class MotorAction implements IAction {
     public boolean init() {
         wheels.resetEncoders();
         wheels.runWithEncoders();
-        return true;
+        isInitialized = true;
+        return isInitialized();
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return this.isInitialized;
     }
 
     @Override
@@ -56,6 +64,13 @@ public class MotorAction implements IAction {
 
     @Override
     public boolean stop() {
+        // TODO - implement
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        // TODO - implement
         return false;
     }
 }

@@ -17,6 +17,11 @@ public class TelemetryAction implements IAction{
 
     @Override
     public boolean init() {
+        return isInitialized();
+    }
+
+    @Override
+    public boolean isInitialized() {
         return true;
     }
 
@@ -40,6 +45,13 @@ public class TelemetryAction implements IAction{
 
     @Override
     public boolean stop() {
+        // TODO - implement
         return true;
+    }
+
+    @Override
+    public boolean isStopped() {
+        // TODO - implement
+        return false;
     }
 }

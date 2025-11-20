@@ -18,6 +18,11 @@ public class ShooterAction implements IAction{
 
     @Override
     public boolean init() {
+        return isInitialized();
+    }
+
+    @Override
+    public boolean isInitialized() {
         return true;
     }
 
@@ -41,6 +46,13 @@ public class ShooterAction implements IAction{
 
     @Override
     public boolean stop() {
+        // TODO - implement
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        // TODO - implement
         return false;
     }
 }
