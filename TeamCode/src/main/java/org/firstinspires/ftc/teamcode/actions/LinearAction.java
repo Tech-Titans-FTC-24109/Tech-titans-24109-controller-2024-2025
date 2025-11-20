@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.actions;
 
-// TODO - implement
+// TODO - implement - Enable LinearActionTest first!
 public class LinearAction implements ICompositeAction {
 
     private final IAction[] linearActions;
