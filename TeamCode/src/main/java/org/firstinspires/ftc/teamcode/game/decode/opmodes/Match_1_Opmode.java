@@ -32,9 +32,9 @@ public class Match_1_Opmode extends DecodeOpmode {
         // create autonomous actions
 //        addAutoAction(new TelemetryAction("Floeppy", robot.getTelemetry()));
 //        addAutoAction(new TelemetryAction("Doodle", robot.getTelemetry()));
-        addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
-        addAutoAction(new TurnAction(imuCalculator, -90, new MecanumWheelsController(hardwareMap), telemetry));
-        addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
-        addAutoAction(new ShooterAction(telemetry, new ShooterWheelController(hardwareMap), 1));
+    //    addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
+    //    addAutoAction(new TurnAction(imuCalculator, -90, new MecanumWheelsController(hardwareMap), telemetry));
+    //    addAutoAction(new MotorAction(imuCalculator, new MecanumWheelsController(hardwareMap), telemetry, 100));
+        addAutoAction(new ShooterAction(telemetry, new ShooterWheelController(hardwareMap), -1));
     }
 }

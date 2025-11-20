@@ -30,7 +30,7 @@ public class ShooterAction implements IAction{
 
     @Override
     public boolean isFinished() {
-        if (iterates >= 100) {
+        if (iterates >= 500000) {
             shooterWheelController.spinWheel(0);
             return true;
         }
