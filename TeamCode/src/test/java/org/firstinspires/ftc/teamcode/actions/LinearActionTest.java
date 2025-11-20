@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.actions;
 
+import static org.firstinspires.ftc.teamcode.actions.IActionVerifier.verifyNonGetterInteraction;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,18 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@Disabled("Until LinearAction gets implemented")
 public class LinearActionTest {
 
     @Nested
@@ -50,20 +46,20 @@ public class LinearActionTest {
         @DisplayName("WHEN init empty linear action twice EXPECT IllegalStateException")
         void WHEN_initEmptyLinearActionTwice_EXPECT_illegalStateException() {
             linearAction.init();
-            assertThrows(IllegalStateException.class, () -> linearAction.init());
+            assertThrows(IllegalStateException.class, linearAction::init);
         }
 
         @Test
         @DisplayName("WHEN iterate empty linear action before init EXPECT IllegalStateException")
         void WHEN_iterateEmptyLinearActionBeforeInit_EXPECT_illegalStateException() {
-            assertThrows(IllegalStateException.class, () -> linearAction.iterate());
+            assertThrows(IllegalStateException.class, linearAction::iterate);
         }
 
         @Test
         @DisplayName("WHEN iterate empty linear action EXPECT IllegalStateException")
         void WHEN_interateEmptyLinearAction_EXPECT_IllegalStateException() {
             linearAction.init();
-            assertThrows(IllegalStateException.class, () -> linearAction.iterate());
+            assertThrows(IllegalStateException.class, linearAction::iterate);
             assertTrue(linearAction.isFinished());
         }
 
@@ -91,6 +87,15 @@ public class LinearActionTest {
     @DisplayName("Non-empty Linear Action operation")
     public class NonEmptyLinearAction {
 
+        // Note regarding why not using Mockito verify/verifyNoMoreInvocations
+        //
+        // We want to verify non-getter interactions as they modify state.
+        // Interactions with getters like isXXX() are not relevant as they do
+        // not modify state. But as implementations of the non-getters could use
+        // these getters we cannot use Mockito.verifyNoMoreInvocations() as they
+        // would incorrectly flag them (or we would have to know more about the
+        // implementation).
+
         private LinearAction linearAction;
         private IAction actionOne;
         private IAction actionTwo;
@@ -111,6 +116,15 @@ public class LinearActionTest {
         }
 
         @Test
+        @DisplayName("WHEN action created EXPECT can get array of sub actions")
+        void WHEN_actionCreated_EXPECT_canGetArrayOfSubActions() {
+            IAction[] actions = linearAction.getActions();
+            assertThat(actions.length, is(2));
+            assertThat(actions[0], is(actionOne));
+            assertThat(actions[1], is(actionTwo));
+        }
+
+        @Test
         @DisplayName("WHEN init action EXPECT init called on actionOne")
         void WHEN_initAction_EXPECT_initCalledOnActionOne() {
             assertTrue(linearAction.init());
@@ -118,10 +132,17 @@ public class LinearActionTest {
             assertFalse(linearAction.isFinished());
             assertFalse(linearAction.isStopped());
 
-            verify(actionOne, times(1)).init();
-            verifyNoMoreInteractions(actionOne);
+            // See note regarding why not using Mockito verify/verifyNoMoreInvocations
+            verifyNonGetterInteraction(actionOne)
+                    .init(1)
+                    .noOtherInteractions();
             verifyNoInteractions(actionTwo);
-        }
+            // check state of sub actions
+            assertTrue(actionOne.isInitialized());
+            assertFalse(actionOne.isFinished());
+            assertFalse(actionOne.isStopped());
+            assertFalse(actionTwo.isInitialized());
+       }
 
         @Test
         @DisplayName("WHEN init action twice EXPECT IllegalStateException")
@@ -130,7 +151,7 @@ public class LinearActionTest {
             reset(actionOne);
             reset(actionTwo);
 
-            assertThrows(IllegalStateException.class, () -> linearAction.init());
+            assertThrows(IllegalStateException.class, linearAction::init);
             verifyNoInteractions(actionOne);
             verifyNoInteractions(actionTwo);
         }
@@ -138,7 +159,7 @@ public class LinearActionTest {
         @Test
         @DisplayName("WHEN iterate action before init EXPECT IllegalStateException")
         void WHEN_iterateActionBeforeInit_EXPECT_illegalStateException() {
-            assertThrows(IllegalStateException.class, () -> linearAction.iterate());
+            assertThrows(IllegalStateException.class, linearAction::iterate);
             verifyNoInteractions(actionOne);
             verifyNoInteractions(actionTwo);
         }
@@ -151,8 +172,11 @@ public class LinearActionTest {
 
             assertFalse(linearAction.isFinished());
             assertFalse(actionOne.isFinished());
-            verify(actionOne, times(1)).init();
-            verify(actionOne, times(1)).iterate();
+            // See note regarding why not using Mockito verify/verifyNoMoreInvocations
+            verifyNonGetterInteraction(actionOne)
+                    .init(1)
+                    .iterate(1)
+                    .noOtherInteractions();
             verifyNoInteractions(actionTwo);
         }
 
@@ -165,8 +189,11 @@ public class LinearActionTest {
 
             assertFalse(linearAction.isFinished());
             assertTrue(actionOne.isFinished());
-            verify(actionOne, times(1)).init();
-            verify(actionOne, times(2)).iterate();
+            // See note regarding why not using Mockito verify/verifyNoMoreInvocations
+            verifyNonGetterInteraction(actionOne)
+                    .init(1)
+                    .iterate(2)
+                    .noOtherInteractions();
             verifyNoInteractions(actionTwo);
         }
 
@@ -181,10 +208,15 @@ public class LinearActionTest {
             assertFalse(linearAction.isFinished());
             assertTrue(actionOne.isFinished());
             assertFalse(actionTwo.isFinished());
-            verify(actionOne, times(1)).init();
-            verify(actionOne, times(2)).iterate();
-            verify(actionTwo, times(1)).init();
-            verify(actionTwo, times(1)).iterate();
+            // See note regarding why not using Mockito verify/verifyNoMoreInvocations
+            verifyNonGetterInteraction(actionOne)
+                    .init(1)
+                    .iterate(2)
+                    .noOtherInteractions();
+            verifyNonGetterInteraction(actionTwo)
+                    .init(1)
+                    .iterate(1)
+                    .noOtherInteractions();
         }
 
         @Test
@@ -199,10 +231,15 @@ public class LinearActionTest {
             assertTrue(linearAction.isFinished());
             assertTrue(actionOne.isFinished());
             assertTrue(actionTwo.isFinished());
-            verify(actionOne, times(1)).init();
-            verify(actionOne, times(2)).iterate();
-            verify(actionTwo, times(1)).init();
-            verify(actionTwo, times(2)).iterate();
+            // See note regarding why not using Mockito verify/verifyNoMoreInvocations
+            verifyNonGetterInteraction(actionOne)
+                    .init(1)
+                    .iterate(2)
+                    .noOtherInteractions();
+            verifyNonGetterInteraction(actionTwo)
+                    .init(1)
+                    .iterate(2)
+                    .noOtherInteractions();
         }
 
         @Test
@@ -213,7 +250,7 @@ public class LinearActionTest {
                 linearAction.iterate();
             }
 
-            assertThrows(IllegalStateException.class, () -> linearAction.iterate());
+            assertThrows(IllegalStateException.class, linearAction::iterate);
         }
 
         @Test
@@ -236,7 +273,7 @@ public class LinearActionTest {
             linearAction.iterate();
             linearAction.stop();
 
-            assertThrows(IllegalStateException.class, () -> linearAction.iterate());
+            assertThrows(IllegalStateException.class, linearAction::iterate);
         }
     }
 }
