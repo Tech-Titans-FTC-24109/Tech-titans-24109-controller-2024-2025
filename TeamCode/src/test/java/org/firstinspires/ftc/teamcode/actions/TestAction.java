@@ -60,4 +60,13 @@ public class TestAction implements IAction {
     public boolean isStopped() {
         return currentIters >= numIters;
     }
+
+    @Override
+    public String toString() {
+        return "TestAction{" +
+                "id='" + id + '\'' +
+                ", numIters=" + numIters +
+                ", currentIters=" + currentIters +
+                '}';
+    }
 }
