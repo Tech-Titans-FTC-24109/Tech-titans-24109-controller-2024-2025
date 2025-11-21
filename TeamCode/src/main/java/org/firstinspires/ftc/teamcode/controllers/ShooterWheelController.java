@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ShooterWheelController {
@@ -9,6 +10,7 @@ public class ShooterWheelController {
 
     public ShooterWheelController (HardwareMap hardwareMap) {
         shooterWheel = hardwareMap.get(DcMotor.class, "Shooter");
+        shooterWheel.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void spinWheel(double power) {
