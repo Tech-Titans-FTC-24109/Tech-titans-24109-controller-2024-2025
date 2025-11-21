@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-@Disabled("Until ParallelAction gets implemented")
+//@Disabled("Until ParallelAction gets implemented")
 public class ParallelActionTest {
 
     @Nested

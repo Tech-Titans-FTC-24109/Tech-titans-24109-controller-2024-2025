@@ -16,7 +16,10 @@ public class ParallelAction implements ICompositeAction {
 
     @Override   // TODO implement
     public boolean init() {
-        return false;
+        for (IAction action :
+                parallelActions) {
+            action.init();
+        }
     }
 
     @Override   // TODO implement
@@ -26,7 +29,10 @@ public class ParallelAction implements ICompositeAction {
 
     @Override   // TODO implement
     public boolean iterate() {
-        return false;
+        for (IAction action :
+                parallelActions) {
+            action.iterate();
+        }
     }
 
     @Override   // TODO implement
