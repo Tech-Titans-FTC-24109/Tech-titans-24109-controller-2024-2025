@@ -1,14 +1,21 @@
 package org.firstinspires.ftc.teamcode.actions;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-// TODO update the Javadoc so we know what to return when
+/**
+ * Specification for an Action
+ */
 public interface IAction {
 
     /**
-     * Initialize the action. Returns true when TODO, otherwise false
+     * Initialize the action. Should return true when the initialization
+     * completes successfully. The state of the intialization can be
+     * checked by calling {@link #isInitialized()}.
      *
-     * @return TODO
+     * When the initialization fails it should be possible to call
+     * {@link #init()} again on the action. In all other cases {@link #init()}
+     * should not be called again as this could throw a
+     * {@link java.lang.IllegalStateException}.
+     *
+     * @return true when initialization completed successfully, otherwise false
      */
     boolean init();
 
@@ -20,22 +27,31 @@ public interface IAction {
     boolean isInitialized();
 
     /**
-     * Perform one iteration of the actions. Returns true when TODO, otherwise false
+     * Perform one iteration of the actions. Returns true when the action has
+     * not finished and can be iterated again, otherwise false.
      *
-     * @return TODO
+     * This operation cannot be performed when the action is not initialized,
+     * has finished or has been stopped. Calling {@link #iterate()} when the
+     * action is in these states could throw a {@link java.lang.IllegalStateException}.
+     *
+     * @return true when the action has not finished and can be iterated again,
+     *      otherwise false
      */
     boolean iterate();
 
     /**
-     * TODO
+     * Test whether the action has finished. When the action is finished, it
+     * cannot be initialized again or iterated any further.
      *
-     * @return TODO
+     * @return true when finished, otherwise false
      */
     boolean isFinished();
 
     /**
      * Stop the action. The action should power down all the resources that
-     * it was using, e.g. motors.
+     * it was using, e.g. motors. After the action is stopped, it cannot be
+     * initialized again or iterated any further. Performing any of these
+     * operations could throw a {@link java.lang.IllegalStateException}.
      *
      * @return true when already stopped or stop was successful, otherwise false
      */
@@ -43,7 +59,8 @@ public interface IAction {
 
     /**
      * Test whether the action has stopped and powered down any used resources,
-     * e.g. motors
+     * e.g. motors. When the action is stopped, it cannot be initialized again
+     * or iterated any further.
      *
      * @return true when stopped, otherwise false
      */
