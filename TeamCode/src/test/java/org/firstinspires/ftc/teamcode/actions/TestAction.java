@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.actions;
 
-public class TestAction implements IAction {
+public class TestAction extends BaseTestAction {
 
     private final String id;
     private final int numIters;
@@ -21,44 +21,21 @@ public class TestAction implements IAction {
     }
 
     @Override
-    public boolean init() {
-        if (isInitialized() || isFinished() || isStopped()) {
-            throw new IllegalStateException("Test action cannot be initialized twice or when finished or stopped");
-        }
+    public boolean doInit() {
         currentIters = 0;
         return true;
     }
 
     @Override
-    public boolean isInitialized() {
-        return currentIters >= 0;
+    public boolean doIterate() {
+        currentIters++;
+        return !(currentIters >= numIters);
     }
 
     @Override
-    public boolean iterate() {
-        if (!isInitialized() || isFinished()) {
-            throw new IllegalStateException("Test action has to be initialized before iteration");
-        }
-        if (!isFinished()) {
-            currentIters++;
-        }
-        return !isFinished();
-    }
-
-    @Override
-    public boolean isFinished() {
-        return currentIters >= numIters;
-    }
-
-    @Override
-    public boolean stop() {
+    public boolean doStop() {
         currentIters = numIters;
         return true;
-    }
-
-    @Override
-    public boolean isStopped() {
-        return currentIters >= numIters;
     }
 
     @Override

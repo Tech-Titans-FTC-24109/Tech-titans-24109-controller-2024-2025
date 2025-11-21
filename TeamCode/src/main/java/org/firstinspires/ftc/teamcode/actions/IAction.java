@@ -42,6 +42,8 @@ public interface IAction {
     /**
      * Test whether the action has finished. When the action is finished, it
      * cannot be initialized again or iterated any further.
+     * <p>
+     * An action that is finished, is not stopped, but should be explicitly stopped.
      *
      * @return true when finished, otherwise false
      */
@@ -52,6 +54,7 @@ public interface IAction {
      * it was using, e.g. motors. After the action is stopped, it cannot be
      * initialized again or iterated any further. Performing any of these
      * operations could throw a {@link java.lang.IllegalStateException}.
+     * An action that is stopped should also be in a finished state.
      *
      * @return true when already stopped or stop was successful, otherwise false
      */

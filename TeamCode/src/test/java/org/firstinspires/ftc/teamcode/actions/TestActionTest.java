@@ -66,7 +66,7 @@ public class TestActionTest {
 
         assertFalse(action.iterate());
         assertTrue(action.isFinished());
-        assertTrue(action.isStopped());
+        assertFalse(action.isStopped());
     }
 
     @Test
@@ -99,6 +99,8 @@ public class TestActionTest {
         assertFalse(action.isStopped());
         assertTrue(action.stop());
         assertTrue(action.isStopped());
+        // when the action is stopped it should also be finished
+        assertTrue(action.isFinished());
     }
 
     @Test
