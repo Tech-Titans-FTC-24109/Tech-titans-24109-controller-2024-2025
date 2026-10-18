@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.actions;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.robot.component.ImuUtility;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.motions.PidController;
 import org.firstinspires.ftc.teamcode.motions.TimeService;
 
 public class TurnAction implements IAction {
     private ElapsedTime elapsedTime;
-    double maxTime = 500;
+    private final double maxTime = 500;
 
     public static final double ANGLE_ERROR = 5; // degrees
 
@@ -67,7 +67,7 @@ public class TurnAction implements IAction {
         telemetry.addData("target. ", targetAngle);
         telemetry.update();
 
-        return elapsedTime.milliseconds() >= maxTime;
+        return elapsedTime.milliseconds() < maxTime;
     }
 
     @Override

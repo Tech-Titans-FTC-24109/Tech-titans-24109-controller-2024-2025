@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.actions;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 

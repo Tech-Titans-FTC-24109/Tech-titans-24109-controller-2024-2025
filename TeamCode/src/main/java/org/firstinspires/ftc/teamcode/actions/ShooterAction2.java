@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.actions;
 
 import com.bylazar.telemetry.JoinedTelemetry;
 import com.bylazar.telemetry.PanelsTelemetry;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.ShooterWheelController;
@@ -13,7 +12,7 @@ import org.firstinspires.ftc.teamcode.sensor.apriltag.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.sensor.apriltag.DecodeAprilTagDetector;
 
 public class ShooterAction2 implements IAction {
-    boolean isFinished = false;
+    private boolean isFinished = false;
     private final ShooterWheelController shooterWheelController;
     private final JoinedTelemetry telemetry;
     private final double targetRPM;
@@ -34,7 +33,6 @@ public class ShooterAction2 implements IAction {
 
     @Override
     public boolean init() {
-      //  shooterWheelController.resetEncoders();
         shooterWheelController.runWithoutEncoders();
         return true;
 

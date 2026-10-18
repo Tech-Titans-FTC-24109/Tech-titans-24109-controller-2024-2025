@@ -5,15 +5,37 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.sensor.apriltag.AprilTagDetector;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
 import java.util.List;
+
+/*
+📊 Coordinate System (OpenFTC / EasyOpenCV)
+
+From your stream image and tests:
+
+Axis	Meaning	Units (cm or inches depending on config)
+X	    Left/Right (positive = right)
+Y	    Forward/Backward (distance to tag)
+Z	    Up/Down (positive = up)
+
+Distance to april tag (z)
+Detections  | Real
+---------------------
+ 40         |  47.5
+ 60         |  70.5
+ 80         |  94.5
+100         | 114.5
+120         | 137
+
+Bearing : Angle to camera view centered on april tag
+            Ex: bearing 0 when facing center of april tag
+Yaw     : Angle to camera view perpendicular to april tag
+            Ex: yaw 0 when camera is perpendicular to the center of the april tag
+
+
+ */
 
 @Autonomous
 public class AprilTagDataDetection extends LinearOpMode {
@@ -29,10 +51,10 @@ public class AprilTagDataDetection extends LinearOpMode {
 //            if (detector.isStopped()) {
 //                detector.start();
 //            }
-            List<AprilTagDetection> currentDetections = detector.getAprilTags();
+            List<AprilTagSingleDetection> currentDetections = detector.getAprilTags();
 
             if (!currentDetections.isEmpty()) {
-                for (AprilTagDetection detection : currentDetections) {
+                for (AprilTagSingleDetection detection : currentDetections) {
                     if (detection.id >= 20 && detection.id <= 24) {
                         double angleToTag = Math.toDegrees(Math.atan2(detection.ftcPose.x, detection.ftcPose.y));
                         telemetry.addData("Tag ID", detection.id);

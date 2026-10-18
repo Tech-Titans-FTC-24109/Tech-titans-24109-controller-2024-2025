@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Jonathan;
 
+import org.firstinspires.ftc.teamcode.controllers.ArmController;
+import org.firstinspires.ftc.teamcode.controllers.ClawController;
+import org.firstinspires.ftc.teamcode.controllers.RPController;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 

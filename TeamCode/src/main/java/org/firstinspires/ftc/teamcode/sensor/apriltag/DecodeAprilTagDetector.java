@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.sensor.apriltag;
 
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.decode.Motif;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
 import java.util.List;
 
@@ -19,45 +19,45 @@ public class DecodeAprilTagDetector implements IDecodeAprilTagDetector {
 
     @Override
     public boolean isRedGoalDetected() {
-            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
-            for (AprilTagDetection aprilTag : aprilTags) {
-                if (aprilTag.id == RED_GOAL_APRIL_TAG_ID) {
-                    return true;
-                }
+        List<AprilTagSingleDetection> aprilTags = aprilTagDetector.getAprilTags();
+        for (AprilTagSingleDetection aprilTag : aprilTags) {
+            if (aprilTag.id == RED_GOAL_APRIL_TAG_ID) {
+                return true;
             }
+        }
         return false;
     }
 
     @Override
     public boolean isBlueGoalDetected() {
-            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
-            for (AprilTagDetection aprilTag : aprilTags) {
-                if (aprilTag.id == BLUE_GOAL_APRIL_TAG_ID) {
-                    return true;
-                }
+        List<AprilTagSingleDetection> aprilTags = aprilTagDetector.getAprilTags();
+        for (AprilTagSingleDetection aprilTag : aprilTags) {
+            if (aprilTag.id == BLUE_GOAL_APRIL_TAG_ID) {
+                return true;
             }
+        }
         return false;
     }
 
     @Override
     public boolean isMotifDetected() {
-            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
-            for (AprilTagDetection aprilTag : aprilTags) {
-                if (aprilTag.id >= 21 && aprilTag.id <= 23) {
-                    return true;
-                }
+        List<AprilTagSingleDetection> aprilTags = aprilTagDetector.getAprilTags();
+        for (AprilTagSingleDetection aprilTag : aprilTags) {
+            if (aprilTag.id >= 21 && aprilTag.id <= 23) {
+                return true;
             }
+        }
         return false;
     }
 
     @Override
     public Motif getMotif() {
-            List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
-            for (AprilTagDetection aprilTag : aprilTags) {
-                if (Motif.getByAprilTagId(aprilTag.id) != Motif.Unknown) {
-                    return Motif.getByAprilTagId(aprilTag.id);
-                }
+        List<AprilTagSingleDetection> aprilTags = aprilTagDetector.getAprilTags();
+        for (AprilTagSingleDetection aprilTag : aprilTags) {
+            if (Motif.getByAprilTagId(aprilTag.id) != Motif.Unknown) {
+                return Motif.getByAprilTagId(aprilTag.id);
             }
+        }
         return Motif.Unknown;
     }
 
@@ -69,30 +69,10 @@ public class DecodeAprilTagDetector implements IDecodeAprilTagDetector {
 
     @Override
     public double getDistance() {
-        List<AprilTagDetection> aprilTags = aprilTagDetector.getAprilTags();
-        for (AprilTagDetection aprilTag : aprilTags) {
+        List<AprilTagSingleDetection> aprilTags = aprilTagDetector.getAprilTags();
+        for (AprilTagSingleDetection aprilTag : aprilTags) {
             return aprilTag.ftcPose.range;
         }
         return 0;
     }
-
-//    @Override
-//    public boolean start() {
-//        return aprilTagDetector.start();
-//    }
-//
-//    @Override
-//    public boolean isStarted() {
-//        return aprilTagDetector.isStarted();
-//    }
-//
-//    @Override
-//    public boolean stop() {
-//        return aprilTagDetector.stop();
-//    }
-//
-//    @Override
-//    public boolean isStopped() {
-//        return aprilTagDetector.isStopped();
-//    }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Jonah;
+package org.firstinspires.ftc.teamcode.robot.component;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;

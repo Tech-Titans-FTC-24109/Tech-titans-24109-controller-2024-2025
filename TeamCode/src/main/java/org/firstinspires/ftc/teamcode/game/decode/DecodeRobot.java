@@ -46,7 +46,7 @@ public class DecodeRobot extends Robot {
         return imu.createProxy();
     }
 
-    public IAction getMotifAction = new IAction() {
+    private final IAction motifAction = new IAction() {
         private DecodeAprilTagDetector decodeAprilTagDetector;
         private boolean isInitialized = false;
         private boolean isFinished = false;

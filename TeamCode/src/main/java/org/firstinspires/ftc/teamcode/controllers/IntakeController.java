@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeController{
     private DcMotor intakeWheel;
     private Servo gate;
-//    private Servo bootKickerAlt;
 
     public IntakeController (HardwareMap hardwareMap) {
         intakeWheel = hardwareMap.get(DcMotor.class, "Intake");

@@ -4,7 +4,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 
 public class GateAction implements IAction {
-    boolean isFinished = false;
+    private boolean isFinished = false;
     private final IntakeController intakeController;
     private final Telemetry telemetry;
     private final double position;

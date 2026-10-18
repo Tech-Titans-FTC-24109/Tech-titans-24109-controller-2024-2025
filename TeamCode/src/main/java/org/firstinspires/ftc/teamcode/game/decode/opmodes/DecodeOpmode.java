@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.game.decode.opmodes;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.teamcode.ExtendableOpmode;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.robot.component.ImuUtility;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.actions.AltBootKickAction;
 import org.firstinspires.ftc.teamcode.actions.GateAction;
 import org.firstinspires.ftc.teamcode.actions.IAction;
@@ -58,7 +58,6 @@ public abstract class DecodeOpmode extends ExtendableOpmode {
     }
 
     protected void addAuto2Strategy(CameraName camera, Alliance alliance, ImuUtility imuUtility) {
-        //random message: hi
         Motif motif = Motif.PPG;
         addShootAction(camera);
         addAlignSpikeMarkFromC6(alliance, motif, imuUtility);
@@ -92,7 +91,8 @@ public abstract class DecodeOpmode extends ExtendableOpmode {
     }
 
     protected void addShootAction(CameraName camera) {
-        addAutoAction(new ShooterAction(telemetry, new ShooterWheelController(hardwareMap), 1, new AprilTagDetector(camera), robot.getAlliance()));addAutoAction(new GateAction(new IntakeController(hardwareMap), telemetry, -0.5));//open
+        addAutoAction(new ShooterAction(telemetry, new ShooterWheelController(hardwareMap), 1, new AprilTagDetector(camera), robot.getAlliance()));
+        addAutoAction(new GateAction(new IntakeController(hardwareMap), telemetry, -0.5));//open
         addAutoAction(new AltBootKickAction(new IntakeController(hardwareMap), telemetry, 0.9));// up
         addAutoAction(new AltBootKickAction(new IntakeController(hardwareMap), telemetry, 0.6));//down
         addAutoAction(new IntakeAction(new IntakeController(hardwareMap), telemetry, 0.75));//intake

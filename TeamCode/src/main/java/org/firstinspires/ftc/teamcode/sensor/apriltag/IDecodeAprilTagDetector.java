@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.sensor.apriltag;
 
-import org.firstinspires.ftc.teamcode.Startable;
-import org.firstinspires.ftc.teamcode.Stoppable;
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.decode.Motif;
 

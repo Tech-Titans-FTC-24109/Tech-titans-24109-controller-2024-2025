@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.motions;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
+import org.firstinspires.ftc.teamcode.robot.component.ImuUtility;
 
 public class SleepMotion extends AbstractMotion {
 

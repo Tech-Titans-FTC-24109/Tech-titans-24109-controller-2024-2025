@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.motions;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.robot.component.ImuUtility;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 
 public class MoveMotion extends AbstractMotion {
 

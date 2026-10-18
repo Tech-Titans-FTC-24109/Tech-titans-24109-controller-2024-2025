@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.actions;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.robot.component.ImuUtility;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.motions.PidController;
 import org.firstinspires.ftc.teamcode.motions.TimeService;
 
@@ -60,7 +60,7 @@ public class StrafeAction implements IAction {
     @Override
     public boolean isFinished() {
         double currentDistance = wheels.getDistance() * STRAFE_LOSS_FACTOR;
-        double remainingDistance = targetDistance - currentDistance;
+        double remainingDistance;
         if (targetDistance <0) {
             remainingDistance = targetDistance + currentDistance;
         } else {

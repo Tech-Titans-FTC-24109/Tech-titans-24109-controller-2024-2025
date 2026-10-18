@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 import org.firstinspires.ftc.teamcode.controllers.ShooterWheelController;
 

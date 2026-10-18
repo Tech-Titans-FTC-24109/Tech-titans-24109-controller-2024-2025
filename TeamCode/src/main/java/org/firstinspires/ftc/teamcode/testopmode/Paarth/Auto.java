@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.Paarth;
+package org.firstinspires.ftc.teamcode.testopmode.Paarth;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Jonathan.ArmController;
-import org.firstinspires.ftc.teamcode.Jonathan.ClawController;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
-import org.firstinspires.ftc.teamcode.Jonathan.RPController;
+import org.firstinspires.ftc.teamcode.controllers.ArmController;
+import org.firstinspires.ftc.teamcode.controllers.ClawController;
+import org.firstinspires.ftc.teamcode.controllers.MecanumWheelsController;
+import org.firstinspires.ftc.teamcode.controllers.RPController;
 
 import java.util.function.BooleanSupplier;
 

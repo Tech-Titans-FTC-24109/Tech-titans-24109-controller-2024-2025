@@ -2,18 +2,16 @@ package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ShooterWheelController {
 
     private DcMotorEx shooterWheel;
     private ElapsedTime runtime = new ElapsedTime();
-    double prevTime = 0;
-    double prevPosition = 0;
+    private double prevTime = 0;
+    private double prevPosition = 0;
 
 
     public ShooterWheelController(HardwareMap hardwareMap) {
@@ -41,7 +39,6 @@ public class ShooterWheelController {
     }
 
     public double getRPM() {
-        //double TPR = shooterWheel.getMotorType().getTicksPerRev();
         double revolutions;
         double currentRPM;
         double position = shooterWheel.getCurrentPosition();
@@ -70,7 +67,6 @@ public class ShooterWheelController {
     }
 
     public double getAltRPM() {
-        //double ticksPerRev = shooterWheel.getMotorType().getTicksPerRev();
         double ticksPerSecond = shooterWheel.getVelocity();
         return (ticksPerSecond / 24) * 60;
     }

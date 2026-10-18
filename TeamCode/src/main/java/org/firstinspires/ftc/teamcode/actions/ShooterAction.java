@@ -32,7 +32,6 @@ public class ShooterAction implements IAction {
 
     @Override
     public boolean init() {
-        //shooterWheelController.resetEncoders();
         shooterWheelController.runWithEncoders();
         return isInitialized();
     }
@@ -45,7 +44,6 @@ public class ShooterAction implements IAction {
     @Override
     public boolean iterate() {
         if (decodeAprilTagDetector.isGoalDetected(alliance)) {
-            Alliance alliance = Alliance.RED;
             shooterWheelController.spinWheel(-DistanceToPowerConverter.convert(aprilTagDetector.getAprilTags().get(0).ftcPose.range));
             telemetry.addData("rpm", shooterWheelController.getRPM());
             telemetry.addData("Current Position", shooterWheelController.getShooterPosition());

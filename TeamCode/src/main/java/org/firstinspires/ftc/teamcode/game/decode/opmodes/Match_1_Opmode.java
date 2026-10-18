@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.game.decode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.IMU;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
@@ -9,21 +8,14 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.Jonah.ImuUtility;
-import org.firstinspires.ftc.teamcode.Jonathan.MecanumWheelsController;
 import org.firstinspires.ftc.teamcode.actions.GateAction;
 import org.firstinspires.ftc.teamcode.actions.IntakeAction;
-import org.firstinspires.ftc.teamcode.actions.MotorAction;
-import org.firstinspires.ftc.teamcode.actions.ShooterAction;
 import org.firstinspires.ftc.teamcode.actions.ShooterAction2;
-import org.firstinspires.ftc.teamcode.actions.StrafeAction;
 import org.firstinspires.ftc.teamcode.actions.TimeWaitAction;
-import org.firstinspires.ftc.teamcode.actions.TurnAction;
 import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 import org.firstinspires.ftc.teamcode.controllers.ShooterWheelController;
 import org.firstinspires.ftc.teamcode.game.Alliance;
 import org.firstinspires.ftc.teamcode.game.decode.DecodeRobot;
-import org.firstinspires.ftc.teamcode.motions.PidController;
 import org.firstinspires.ftc.teamcode.sensor.apriltag.AprilTagDetector;
 
 @Autonomous(name = "Match 1", group = "Match Opmodes")
@@ -40,12 +32,12 @@ public class Match_1_Opmode extends DecodeOpmode {
         robot.setStartPosition(START_POS);
         robot.setAlliance(ALLIANCE);
         // create autonomous actions
-        addAutoAction(new ShooterAction2(new ShooterWheelController(hardwareMap), telemetry, 6000, aprilTagDetector, Alliance.RED));
+        addAutoAction(new ShooterAction2(new ShooterWheelController(hardwareMap), telemetry, 6000, aprilTagDetector, ALLIANCE));
         addAutoAction(new TimeWaitAction(3000));
         addAutoAction(new GateAction(new IntakeController(hardwareMap), telemetry, 0));
         addAutoAction(new IntakeAction(new IntakeController(hardwareMap), telemetry, 1));
         addAutoAction(new TimeWaitAction(5000));//shoot 3 balls
         addAutoAction(new IntakeAction(new IntakeController(hardwareMap), telemetry, 0.3));
-        addAutoAction(new ShooterAction2(new ShooterWheelController(hardwareMap), telemetry, 0, aprilTagDetector, Alliance.RED));//turn off shooter
+        addAutoAction(new ShooterAction2(new ShooterWheelController(hardwareMap), telemetry, 0, aprilTagDetector, ALLIANCE));//turn off shooter
     }
 }

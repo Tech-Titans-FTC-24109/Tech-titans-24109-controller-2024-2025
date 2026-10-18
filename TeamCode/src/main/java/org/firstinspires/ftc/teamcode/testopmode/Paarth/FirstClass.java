@@ -1,29 +1,42 @@
-package org.firstinspires.ftc.teamcode.Jonah;
+package org.firstinspires.ftc.teamcode.testopmode.Paarth;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-/** Configuration File
+
+/**
+ * Config. File
  *
  *
  */
 
-@Autonomous(name="myTest")
+
+
 @Disabled
-public class OpMode_Template extends LinearOpMode {
+@TeleOp(group = "Primary")
+
+public class FirstClass extends LinearOpMode {
+    
     @Override
     public void runOpMode() throws InterruptedException {
         initHardware();
-        while(!isStarted()) {
+        while (!isStarted()) {
+
         }
+
         waitForStart();
         while (opModeIsActive()) {
+
         }
+
     }
 
     public void initHardware() {
-
+        initVoltageSensor();
     }
+
+    public void initVoltageSensor() {}
+
 
 }
