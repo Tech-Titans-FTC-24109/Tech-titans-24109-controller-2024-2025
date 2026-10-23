@@ -4,6 +4,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -41,5 +42,19 @@ public class AprilTagDetector implements IAprilTagDetector {
             }
         }
         return singleTags;
+    }
+
+    /**
+     * Cluster detections have no tag id; identify them with metadata.name.
+     */
+    @Override
+    public List<AprilTagClusterDetection> getClusters() {
+        List<AprilTagClusterDetection> clusters = new ArrayList<>();
+        for (AprilTagDetection detection : aprilTagProcessor.getDetections()) {
+            if (detection instanceof AprilTagClusterDetection) {
+                clusters.add((AprilTagClusterDetection) detection);
+            }
+        }
+        return clusters;
     }
 }
